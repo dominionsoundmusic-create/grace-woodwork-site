@@ -104,6 +104,7 @@ nav{position:fixed;inset:0 0 auto 0;z-index:100;height:76px;display:flex;align-i
 /* ---- sections ---- */
 section{padding:clamp(64px,7vw,110px) var(--rail)}
 .sec-head{max-width:56ch;margin:0 auto 44px;text-align:center}
+#watch .sec-head{margin-left:0;text-align:left}
 .sec-head h2{font-size:clamp(2rem,3.8vw,3.2rem)}
 .sec-head p{margin:16px 0 0;font-size:1.06rem;opacity:.82}
 .tag{font-family:'Roboto Mono',monospace;font-size:12px;letter-spacing:.16em;
@@ -246,6 +247,60 @@ footer a{color:var(--brass);text-decoration:none}
   <span><b>Free</b> estimates on restoration</span>
 </div>
 
+<section class="contact" id="quote">
+  <span class="tag">Get a quote</span>
+  <h2>Send a photo. We'll tell you what it needs.</h2>
+  <p style="max-width:52ch;margin:14px auto 0;text-align:center;opacity:.85">A phone picture and a couple of lines is all it takes. We’ll tell you what the piece needs and what it’ll cost.</p>
+
+  <form class="qform" name="quote" method="POST" action="/thanks.html"
+        data-netlify="true" netlify-honeypot="company" enctype="multipart/form-data">
+    <input type="hidden" name="form-name" value="quote">
+    <p class="hp"><label>Leave this empty <input name="company"></label></p>
+
+    <div class="two">
+      <div class="fg">
+        <label for="q-name">Your name</label>
+        <input id="q-name" name="name" type="text" required autocomplete="name" placeholder="First and last">
+      </div>
+      <div class="fg">
+        <label for="q-phone">Phone</label>
+        <input id="q-phone" name="phone" type="tel" required autocomplete="tel" placeholder="903-555-0100">
+      </div>
+    </div>
+
+    <div class="fg">
+      <label for="q-email">Email <span style="text-transform:none;letter-spacing:0;opacity:.6">(optional)</span></label>
+      <input id="q-email" name="email" type="email" autocomplete="email" placeholder="So we can send photos as it comes along">
+    </div>
+
+    <div class="fg">
+      <label for="q-service">What do you need?</label>
+      <select id="q-service" name="service">
+        <option>Furniture restoration</option>
+        <option>Custom furniture built to order</option>
+        <option>Cabinets or built-ins</option>
+        <option>Kitchen cabinetry</option>
+        <option>Porch or deck repair</option>
+        <option>Signs or custom frames</option>
+        <option>Repair — joints, veneer, legs or hardware</option>
+        <option>Not sure yet</option>
+      </select>
+    </div>
+
+    <div class="fg">
+      <label for="q-photo">Photo of the piece</label>
+      <input id="q-photo" name="photo" type="file" accept="image/*">
+      <p class="hint">A phone picture is plenty. It's the fastest way to get a real answer on what it needs.</p>
+    </div>
+
+    <div class="fg">
+      <label for="q-msg">Tell us about it</label>
+      <textarea id="q-msg" name="message" rows="5" placeholder="What it is, what's wrong with it, and roughly when you'd like it back."></textarea>
+    </div>
+
+    <button type="submit">Send it over</button>
+  </form>
+</section>
 <section id="work" class="work">
   <div class="sec-head">
     <span class="tag">Selected work</span>
@@ -362,8 +417,8 @@ footer a{color:var(--brass);text-decoration:none}
 </section>
 
 <section class="contact" id="contact">
-  <span class="tag">Get a quote</span>
-  <h2>Send a photo. We'll tell you what it needs.</h2>
+  <span class="tag">Find us</span>
+  <h2>Kilgore, Texas.</h2>
   <div class="rows">
     <div class="row"><b>Call or text</b><a href="tel:+19034457477">903-445-7477</a></div>
     <div class="row"><b>Message us</b><a href="https://m.me/100057624850623" rel="noopener" target="_blank">Open Messenger</a><p style="margin:8px 0 0;font-size:.9rem;opacity:.75">100% recommend from 13 reviews</p></div>
@@ -371,54 +426,6 @@ footer a{color:var(--brass);text-decoration:none}
     <div class="row"><b>Hours</b><p>Call for current shop hours. Estimates by appointment.</p></div>
   </div>
 
-  <form class="qform" name="quote" method="POST" action="/thanks.html"
-        data-netlify="true" netlify-honeypot="company" enctype="multipart/form-data">
-    <input type="hidden" name="form-name" value="quote">
-    <p class="hp"><label>Leave this empty <input name="company"></label></p>
-
-    <div class="two">
-      <div class="fg">
-        <label for="q-name">Your name</label>
-        <input id="q-name" name="name" type="text" required autocomplete="name" placeholder="First and last">
-      </div>
-      <div class="fg">
-        <label for="q-phone">Phone</label>
-        <input id="q-phone" name="phone" type="tel" required autocomplete="tel" placeholder="903-555-0100">
-      </div>
-    </div>
-
-    <div class="fg">
-      <label for="q-email">Email <span style="text-transform:none;letter-spacing:0;opacity:.6">(optional)</span></label>
-      <input id="q-email" name="email" type="email" autocomplete="email" placeholder="So we can send photos as it comes along">
-    </div>
-
-    <div class="fg">
-      <label for="q-service">What do you need?</label>
-      <select id="q-service" name="service">
-        <option>Furniture restoration</option>
-        <option>Custom furniture built to order</option>
-        <option>Cabinets or built-ins</option>
-        <option>Kitchen cabinetry</option>
-        <option>Porch or deck repair</option>
-        <option>Signs or custom frames</option>
-        <option>Repair — joints, veneer, legs or hardware</option>
-        <option>Not sure yet</option>
-      </select>
-    </div>
-
-    <div class="fg">
-      <label for="q-photo">Photo of the piece</label>
-      <input id="q-photo" name="photo" type="file" accept="image/*">
-      <p class="hint">A phone picture is plenty. It's the fastest way to get a real answer on what it needs.</p>
-    </div>
-
-    <div class="fg">
-      <label for="q-msg">Tell us about it</label>
-      <textarea id="q-msg" name="message" rows="5" placeholder="What it is, what's wrong with it, and roughly when you'd like it back."></textarea>
-    </div>
-
-    <button type="submit">Send it over</button>
-  </form>
 
 </section>
 
