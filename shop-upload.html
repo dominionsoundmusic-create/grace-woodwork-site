@@ -51,9 +51,24 @@ h2.sec{font-family:Georgia,serif;font-size:1.3rem;margin:30px 0 4px}
 </style>
 </head>
 <body>
+<div id="gate" style="position:fixed;inset:0;background:var(--pine);z-index:999;display:flex;align-items:center;justify-content:center;padding:24px">
+  <div style="max-width:400px;width:100%;background:#fff;border:1px solid rgba(19,38,30,.12);border-radius:4px;padding:28px">
+    <h1 style="font-family:Georgia,serif;font-size:1.4rem;margin:0 0 6px" id="gate-title">Grace Woodwork</h1>
+    <p style="color:#4a5a50;margin:0 0 18px;font-size:.94rem" id="gate-sub">Checking…</p>
+    <div id="gate-fields" style="display:none">
+      <div class="fg"><label for="pw" id="pw-label">Password</label>
+        <input id="pw" type="password" autocomplete="current-password" onkeydown="if(event.key==='Enter')gateGo()"></div>
+      <div class="fg" id="pw2-wrap" style="display:none"><label for="pw2">Type it again</label>
+        <input id="pw2" type="password" onkeydown="if(event.key==='Enter')gateGo()"></div>
+      <button onclick="gateGo()" id="gate-btn">Continue</button>
+      <div id="gate-msg" style="margin-top:12px;font-size:.9rem;min-height:1.3em"></div>
+    </div>
+  </div>
+</div>
 <header>
   <b>Grace Woodwork</b>
   <span>Shop upload</span>
+  <a href="#" onclick="changePw();return false;" style="color:#C79045;font-size:.78rem;margin-left:14px">Change password</a>
 </header>
 
 <div class="wrap">
@@ -93,7 +108,7 @@ h2.sec{font-family:Georgia,serif;font-size:1.3rem;margin:30px 0 4px}
 
 <script>
 var CLOUD = 'rxnz5l6u';
-var PRESET = 'grace-shop';
+var PRESET = null;  // handed back by the server once the password checks out
 var TAG = 'grace-shop';
 var LIST = 'https://res.cloudinary.com/' + CLOUD + '/image/list/' + TAG + '.json';
 
@@ -179,7 +194,71 @@ async function del(publicId){
   }
 }
 
-loadGrid();
+
+var AUTH='/.netlify/functions/shop-auth';
+var gateMode='check';
+
+async function api(payload){
+  var r=await fetch(AUTH,{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify(payload)});
+  var d={}; try{ d=await r.json(); }catch(e){}
+  return {status:r.status, data:d};
+}
+
+async function gateInit(){
+  var sub=document.getElementById('gate-sub'), f=document.getElementById('gate-fields');
+  try{
+    var r=await api({action:'status'});
+    if(r.data.isSet){
+      gateMode='check';
+      sub.textContent='Enter your password to add photos.';
+      document.getElementById('pw-label').textContent='Password';
+    } else {
+      gateMode='set';
+      sub.textContent='First time here — choose a password. You can change it later.';
+      document.getElementById('pw-label').textContent='Choose a password';
+      document.getElementById('pw2-wrap').style.display='block';
+      document.getElementById('pw').autocomplete='new-password';
+    }
+    f.style.display='block';
+    document.getElementById('pw').focus();
+  }catch(e){
+    sub.textContent='Cannot reach the server. Try again in a moment.';
+  }
+}
+
+async function gateGo(){
+  var pw=document.getElementById('pw').value;
+  var msg=document.getElementById('gate-msg');
+  var btn=document.getElementById('gate-btn');
+  if(!pw){ msg.className='err'; msg.textContent='Enter a password.'; return; }
+  if(gateMode==='set'){
+    if(pw!==document.getElementById('pw2').value){ msg.className='err'; msg.textContent='The two do not match.'; return; }
+    if(pw.length<4){ msg.className='err'; msg.textContent='Use at least 4 characters.'; return; }
+  }
+  btn.disabled=true; msg.className=''; msg.textContent='Checking…';
+  var r=await api({action:gateMode, password:pw});
+  btn.disabled=false;
+  if(r.data.ok && r.data.preset){
+    PRESET=r.data.preset;
+    document.getElementById('gate').style.display='none';
+    loadGrid();
+  } else {
+    msg.className='err';
+    msg.textContent=r.data.error || 'Wrong password.';
+  }
+}
+
+async function changePw(){
+  var cur=prompt('Current password:'); if(cur===null) return;
+  var next=prompt('New password (at least 4 characters):'); if(next===null) return;
+  var again=prompt('Type the new one again:'); if(again===null) return;
+  if(next!==again){ alert('The two new passwords do not match.'); return; }
+  var r=await api({action:'change', current:cur, next:next});
+  alert(r.data.ok ? 'Password changed.' : (r.data.error || 'Could not change it.'));
+}
+
+gateInit();
+
 </script>
 </body>
 </html>
