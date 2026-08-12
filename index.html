@@ -173,6 +173,22 @@ footer a{color:var(--brass);text-decoration:none}
 }
 @media(prefers-reduced-motion:reduce){html{scroll-behavior:auto}*{transition:none!important}}
 :focus-visible{outline:3px solid var(--brass);outline-offset:3px}
+
+/* quote form */
+.qform{margin-top:34px;max-width:760px}
+.qform .fg{margin-bottom:16px}
+.qform label{display:block;font-family:'Roboto Mono',monospace;font-size:11px;letter-spacing:.14em;text-transform:uppercase;color:var(--brass);margin-bottom:6px}
+.qform input,.qform select,.qform textarea{width:100%;padding:13px 14px;border:1px solid rgba(199,144,69,.34);background:rgba(237,240,234,.05);color:var(--paper);font-family:inherit;font-size:1rem;border-radius:3px}
+.qform input::placeholder,.qform textarea::placeholder{color:rgba(237,240,234,.42)}
+.qform input:focus,.qform select:focus,.qform textarea:focus{outline:2px solid var(--brass);outline-offset:1px}
+.qform select option{color:#0B1812}
+.qform .two{display:grid;grid-template-columns:1fr 1fr;gap:16px}
+.qform input[type=file]{padding:11px;font-size:.92rem;cursor:pointer}
+.qform .hint{font-size:.82rem;color:rgba(237,240,234,.6);margin-top:6px}
+.qform button{background:var(--brass);color:var(--ink);border:0;padding:15px 34px;font-family:inherit;font-weight:700;font-size:1rem;border-radius:3px;cursor:pointer;letter-spacing:.02em}
+.qform button:hover{background:#d9a457}
+.qform .hp{position:absolute;left:-9999px}
+@media(max-width:640px){.qform .two{grid-template-columns:1fr}}
 </style>
 </head>
 <body>
@@ -349,6 +365,56 @@ footer a{color:var(--brass);text-decoration:none}
     <div class="row"><b>Where we are</b><p>Kilgore, Texas — serving Longview, Gladewater, White Oak, Henderson and Tyler.</p></div>
     <div class="row"><b>Hours</b><p>Call for current shop hours. Estimates by appointment.</p></div>
   </div>
+
+  <form class="qform" name="quote" method="POST" action="/thanks.html"
+        data-netlify="true" netlify-honeypot="company" enctype="multipart/form-data">
+    <input type="hidden" name="form-name" value="quote">
+    <p class="hp"><label>Leave this empty <input name="company"></label></p>
+
+    <div class="two">
+      <div class="fg">
+        <label for="q-name">Your name</label>
+        <input id="q-name" name="name" type="text" required autocomplete="name" placeholder="First and last">
+      </div>
+      <div class="fg">
+        <label for="q-phone">Phone</label>
+        <input id="q-phone" name="phone" type="tel" required autocomplete="tel" placeholder="903-555-0100">
+      </div>
+    </div>
+
+    <div class="fg">
+      <label for="q-email">Email <span style="text-transform:none;letter-spacing:0;opacity:.6">(optional)</span></label>
+      <input id="q-email" name="email" type="email" autocomplete="email" placeholder="So we can send photos as it comes along">
+    </div>
+
+    <div class="fg">
+      <label for="q-service">What do you need?</label>
+      <select id="q-service" name="service">
+        <option>Furniture restoration</option>
+        <option>Custom furniture built to order</option>
+        <option>Cabinets or built-ins</option>
+        <option>Kitchen cabinetry</option>
+        <option>Porch or deck repair</option>
+        <option>Signs or custom frames</option>
+        <option>Repair — joints, veneer, legs or hardware</option>
+        <option>Not sure yet</option>
+      </select>
+    </div>
+
+    <div class="fg">
+      <label for="q-photo">Photo of the piece</label>
+      <input id="q-photo" name="photo" type="file" accept="image/*">
+      <p class="hint">A phone picture is plenty. It's the fastest way to get a real answer on what it needs.</p>
+    </div>
+
+    <div class="fg">
+      <label for="q-msg">Tell us about it</label>
+      <textarea id="q-msg" name="message" rows="5" placeholder="What it is, what's wrong with it, and roughly when you'd like it back."></textarea>
+    </div>
+
+    <button type="submit">Send it over</button>
+  </form>
+
 </section>
 
 <footer>
