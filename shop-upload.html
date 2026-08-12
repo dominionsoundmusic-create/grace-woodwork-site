@@ -1,0 +1,185 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta name="robots" content="noindex, nofollow">
+<title>Add photos — Grace Woodwork</title>
+<link rel="icon" href="/favicon.svg" type="image/svg+xml">
+<style>
+:root{--forest:#13261E;--ink:#0B1812;--pine:#EDF0EA;--pine-2:#DDE3D8;--brass:#C79045;--patina:#7E9179;--paper:#F5F8F3}
+*{box-sizing:border-box}
+body{margin:0;background:var(--pine);color:var(--forest);line-height:1.65;
+     font-family:'Karla',system-ui,-apple-system,Arial,sans-serif}
+header{background:var(--forest);color:var(--paper);padding:18px 24px;display:flex;align-items:center;gap:12px}
+header b{font-size:1.05rem;letter-spacing:.01em}
+header span{margin-left:auto;font-size:.8rem;opacity:.7;font-family:'Roboto Mono',monospace;letter-spacing:.1em;text-transform:uppercase}
+.wrap{max-width:900px;margin:0 auto;padding:34px 24px 80px}
+h1{font-family:Georgia,'Zilla Slab',serif;font-size:1.9rem;margin:0 0 8px}
+.sub{color:#4a5a50;margin:0 0 26px}
+.tips{background:#fff;border:1px solid rgba(19,38,30,.12);border-left:4px solid var(--brass);
+      border-radius:4px;padding:18px 20px;margin-bottom:26px}
+.tips h2{font-family:'Roboto Mono',monospace;font-size:.72rem;letter-spacing:.16em;text-transform:uppercase;
+         color:var(--brass);margin:0 0 10px}
+.tips ul{margin:0;padding-left:20px}
+.tips li{margin:5px 0;font-size:.95rem;color:#3d4f45}
+.card{background:#fff;border:1px solid rgba(19,38,30,.12);border-radius:4px;padding:22px;margin-bottom:26px}
+label{display:block;font-family:'Roboto Mono',monospace;font-size:.7rem;letter-spacing:.14em;
+      text-transform:uppercase;color:var(--forest);opacity:.75;margin:0 0 6px}
+input[type=text],textarea{width:100%;padding:12px 13px;border:1px solid rgba(19,38,30,.2);border-radius:3px;
+      font-family:inherit;font-size:1rem;background:#fff;color:var(--forest)}
+input[type=file]{width:100%;padding:14px;border:2px dashed rgba(199,144,69,.5);border-radius:4px;
+      background:rgba(199,144,69,.06);cursor:pointer;font-family:inherit}
+.fg{margin-bottom:16px}
+button{background:var(--brass);color:var(--ink);border:0;padding:14px 30px;border-radius:3px;
+       font-family:inherit;font-weight:700;font-size:1rem;cursor:pointer}
+button:hover{background:#d9a457}
+button:disabled{opacity:.55;cursor:default}
+#status{margin-top:14px;font-size:.93rem;min-height:1.4em}
+.ok{color:#2f7d4f}.err{color:#b03030}
+.grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(160px,1fr));gap:14px;margin-top:8px}
+.tile{background:#fff;border:1px solid rgba(19,38,30,.12);border-radius:4px;overflow:hidden}
+.tile img{width:100%;aspect-ratio:4/3;object-fit:cover;display:block}
+.tile .cap{padding:8px 10px;font-size:.8rem;color:#4a5a50;min-height:2.2em}
+.tile .del{width:100%;background:transparent;color:#b03030;border:0;border-top:1px solid rgba(19,38,30,.1);
+           padding:9px;font-size:.82rem;font-weight:700;cursor:pointer;border-radius:0}
+.tile .del:hover{background:rgba(176,48,48,.08)}
+h2.sec{font-family:Georgia,serif;font-size:1.3rem;margin:30px 0 4px}
+.note{font-size:.86rem;color:#5a6b60;margin:0 0 14px}
+.bar{height:6px;background:rgba(19,38,30,.12);border-radius:3px;overflow:hidden;margin-top:12px;display:none}
+.bar i{display:block;height:100%;background:var(--brass);width:0;transition:width .25s}
+</style>
+</head>
+<body>
+<header>
+  <b>Grace Woodwork</b>
+  <span>Shop upload</span>
+</header>
+
+<div class="wrap">
+  <h1>Add photos of finished work</h1>
+  <p class="sub">Anything you upload here shows up on the website straight away. If one doesn't look right, delete it and take another.</p>
+
+  <div class="tips">
+    <h2>Before you take the picture</h2>
+    <ul>
+      <li><b>Get it into good light.</b> Outside in the shade is best, or right by an open shop door. Overhead shop lights alone make the wood look orange.</li>
+      <li><b>Don't shoot into a window or the sun</b> — the piece goes dark and the background goes white.</li>
+      <li><b>Wipe it down first.</b> Sawdust and fingerprints show up far more in a photo than in person.</li>
+      <li><b>Get the whole piece in frame</b> with a little room around it, and hold the phone level so the legs don't lean.</li>
+      <li><b>Take two:</b> one straight on, one from the corner so it looks solid rather than flat.</li>
+      <li><b>Clear what's behind it</b> if you can. A plain wall or the shop floor beats a cluttered bench.</li>
+    </ul>
+  </div>
+
+  <div class="card">
+    <div class="fg">
+      <label for="cap">What is it? <span style="text-transform:none;letter-spacing:0;opacity:.7">(shows under the photo)</span></label>
+      <input id="cap" type="text" maxlength="90" placeholder="1940s waterfall dresser, water-damaged veneer, stain matched to her bedroom set">
+    </div>
+    <div class="fg">
+      <label for="file">Choose photos — you can pick several at once</label>
+      <input id="file" type="file" accept="image/*" multiple>
+    </div>
+    <button id="go" onclick="upload()">Upload to the website</button>
+    <div class="bar" id="bar"><i></i></div>
+    <div id="status"></div>
+  </div>
+
+  <h2 class="sec">Already on the website</h2>
+  <p class="note">Newest first. Delete removes it from the site immediately.</p>
+  <div class="grid" id="grid"><p class="note">Loading…</p></div>
+</div>
+
+<script>
+var CLOUD = 'rxnz5l6u';
+var PRESET = 'grace-shop';
+var TAG = 'grace-shop';
+var LIST = 'https://res.cloudinary.com/' + CLOUD + '/image/list/' + TAG + '.json';
+
+function thumb(id, v){ return 'https://res.cloudinary.com/' + CLOUD + '/image/upload/f_auto,q_auto,w_600,c_fill,ar_4:3/v' + v + '/' + id; }
+
+function tokenStore(){ try { return JSON.parse(localStorage.getItem('gwTokens') || '{}'); } catch(e){ return {}; } }
+function saveToken(id, t){ var s = tokenStore(); s[id] = t; localStorage.setItem('gwTokens', JSON.stringify(s)); }
+
+async function loadGrid(){
+  var g = document.getElementById('grid');
+  try {
+    var r = await fetch(LIST + '?t=' + Date.now());
+    if (!r.ok) throw new Error(r.status);
+    var d = await r.json();
+    var res = (d.resources || []).sort(function(a,b){ return (b.version||0) - (a.version||0); });
+    if (!res.length){ g.innerHTML = '<p class="note">Nothing uploaded yet.</p>'; return; }
+    var tokens = tokenStore();
+    g.innerHTML = res.map(function(x){
+      var cap = (x.context && x.context.custom && x.context.custom.caption) || '';
+      var canDel = !!tokens[x.public_id];
+      return '<div class="tile" id="t-' + x.public_id.replace(/[^a-z0-9]/gi,'_') + '">'
+           + '<img src="' + thumb(x.public_id, x.version) + '" alt="' + cap.replace(/"/g,'') + '">'
+           + '<div class="cap">' + (cap || '&nbsp;') + '</div>'
+           + (canDel ? '<button class="del" onclick="del(\'' + x.public_id + '\')">Delete</button>' : '')
+           + '</div>';
+    }).join('');
+  } catch(e){
+    g.innerHTML = '<p class="note">Could not load the list yet. If you just changed a Cloudinary setting, give it a minute and refresh.</p>';
+  }
+}
+
+async function upload(){
+  var f = document.getElementById('file');
+  var cap = document.getElementById('cap').value.trim();
+  var btn = document.getElementById('go');
+  var st = document.getElementById('status');
+  var bar = document.getElementById('bar');
+  if (!f.files.length){ st.className='err'; st.textContent = 'Pick at least one photo first.'; return; }
+
+  btn.disabled = true; bar.style.display='block';
+  var done = 0, total = f.files.length, failed = 0;
+
+  for (var i = 0; i < total; i++){
+    var fd = new FormData();
+    fd.append('file', f.files[i]);
+    fd.append('upload_preset', PRESET);
+    fd.append('tags', TAG);
+    if (cap) fd.append('context', 'caption=' + cap.replace(/\|/g,' '));
+    st.className=''; st.textContent = 'Uploading ' + (i+1) + ' of ' + total + '…';
+    try {
+      var r = await fetch('https://api.cloudinary.com/v1_1/' + CLOUD + '/image/upload', { method:'POST', body: fd });
+      var d = await r.json();
+      if (d.public_id){ done++; if (d.delete_token) saveToken(d.public_id, d.delete_token); }
+      else failed++;
+    } catch(e){ failed++; }
+    bar.querySelector('i').style.width = Math.round(((i+1)/total)*100) + '%';
+  }
+
+  btn.disabled = false;
+  st.className = failed ? 'err' : 'ok';
+  st.textContent = done + ' photo' + (done===1?'':'s') + ' added to the website'
+                 + (failed ? ', ' + failed + ' failed — try those again.' : '.');
+  f.value = ''; document.getElementById('cap').value = '';
+  setTimeout(function(){ bar.style.display='none'; bar.querySelector('i').style.width='0'; }, 900);
+  setTimeout(loadGrid, 1200);
+}
+
+async function del(publicId){
+  if (!confirm('Remove this photo from the website?')) return;
+  var tokens = tokenStore();
+  var t = tokens[publicId];
+  var st = document.getElementById('status');
+  if (!t){ st.className='err'; st.textContent = 'That photo can no longer be removed from this page — ask Maurice.'; return; }
+  try {
+    var fd = new FormData(); fd.append('token', t);
+    var r = await fetch('https://api.cloudinary.com/v1_1/' + CLOUD + '/delete_by_token', { method:'POST', body: fd });
+    if (!r.ok) throw new Error(r.status);
+    st.className='ok'; st.textContent = 'Photo removed.';
+    delete tokens[publicId]; localStorage.setItem('gwTokens', JSON.stringify(tokens));
+    setTimeout(loadGrid, 800);
+  } catch(e){
+    st.className='err'; st.textContent = 'Could not remove it — ask Maurice to take it down.';
+  }
+}
+
+loadGrid();
+</script>
+</body>
+</html>

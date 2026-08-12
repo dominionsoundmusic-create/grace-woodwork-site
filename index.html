@@ -248,7 +248,7 @@ footer a{color:var(--brass);text-decoration:none}
     <p>Church pews, claw-foot pedestal tables, dining sets and cabinets — stripped, repaired and refinished in the shop, then delivered back to the family they belong to. The last few show pieces mid-build, because that is what handmade actually looks like.</p>
   </div>
   <div class="rule tall" style="color:#EDF0EA;margin-bottom:34px"></div>
-  <div class="shots">
+  <div class="shots" id="shots">
     <figure class="shot wide"><img src="images/work-19.jpg" alt="China cabinet, refinished in black" width="1000" height="750" decoding="async" fetchpriority="high"><figcaption>China cabinet, refinished in black</figcaption></figure>
     <figure class="shot wide"><img src="images/work-01.jpg" alt="Restored church pew" width="1000" height="750" decoding="async" fetchpriority="high"><figcaption>Restored church pew</figcaption></figure>
     <figure class="shot"><img src="images/work-16.jpg" alt="Sanding a console table in the shop" width="1000" height="750" decoding="async" loading="lazy"><figcaption>Sanding a console table in the shop</figcaption></figure>
@@ -471,6 +471,39 @@ footer a{color:var(--brass);text-decoration:none}
       card.style.cursor = 'default';
     }, {once:true});
   });
+})();
+</script>
+
+<script>
+/* Newest shop photos come from Cloudinary and are added ahead of the built-in
+   gallery. If anything fails, the original photos are already in the page, so
+   the gallery is never empty. */
+(function(){
+  var CLOUD='rxnz5l6u', TAG='grace-shop';
+  var box=document.getElementById('shots');
+  if(!box) return;
+  fetch('https://res.cloudinary.com/'+CLOUD+'/image/list/'+TAG+'.json')
+    .then(function(r){ if(!r.ok) throw 0; return r.json(); })
+    .then(function(d){
+      var res=(d.resources||[]).sort(function(a,b){return (b.version||0)-(a.version||0);});
+      if(!res.length) return;
+      var frag=document.createDocumentFragment();
+      res.forEach(function(x,n){
+        var cap=(x.context&&x.context.custom&&x.context.custom.caption)||'';
+        var url='https://res.cloudinary.com/'+CLOUD+'/image/upload/f_auto,q_auto,w_1000,c_fill,ar_4:3/v'+x.version+'/'+x.public_id;
+        var fig=document.createElement('figure');
+        fig.className='shot'+(n<2?' wide':'');
+        var img=document.createElement('img');
+        img.src=url; img.alt=cap||'Finished piece by Grace Woodwork';
+        img.width=1000; img.height=750; img.decoding='async';
+        if(n>1) img.loading='lazy';
+        fig.appendChild(img);
+        if(cap){ var c=document.createElement('figcaption'); c.textContent=cap; fig.appendChild(c); }
+        frag.appendChild(fig);
+      });
+      box.insertBefore(frag, box.firstChild);
+    })
+    .catch(function(){ /* built-in gallery already on the page */ });
 })();
 </script>
 </body>
