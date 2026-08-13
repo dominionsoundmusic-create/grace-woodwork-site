@@ -223,13 +223,13 @@ footer a{color:var(--brass);text-decoration:none}
 
 <header class="hero" id="top">
   <div class="hero-slides" aria-hidden="true">
-    <img src="images/hero-1.jpg" alt="" class="on" fetchpriority="high" width="1680" height="800" decoding="async" loading="lazy">
-    <img src="images/hero-2.jpg" alt="" loading="lazy" width="1680" height="800" decoding="async">
-    <img src="images/hero-3.jpg" alt="" loading="lazy" width="1680" height="800" decoding="async">
-    <img src="images/hero-4.jpg" alt="" loading="lazy" width="1680" height="800" decoding="async">
-    <img src="images/hero-5.jpg" alt="" loading="lazy" width="1680" height="800" decoding="async">
-    <img src="images/hero-6.jpg" alt="" loading="lazy" width="1680" height="800" decoding="async">
-    <img src="images/hero-7.jpg" alt="" loading="lazy" width="1680" height="800" decoding="async">
+    <img src="images/hero-1.jpg" srcset="images/hero-1-sm.jpg 900w, images/hero-1.jpg 1680w" sizes="100vw" alt="" class="on" fetchpriority="high" width="1680" height="800" decoding="async">
+    <img data-src="images/hero-2.jpg" data-srcset="images/hero-2-sm.jpg 900w, images/hero-2.jpg 1680w" sizes="100vw" alt="" width="1680" height="800" decoding="async" loading="lazy">
+    <img data-src="images/hero-3.jpg" data-srcset="images/hero-3-sm.jpg 900w, images/hero-3.jpg 1680w" sizes="100vw" alt="" width="1680" height="800" decoding="async" loading="lazy">
+    <img data-src="images/hero-4.jpg" data-srcset="images/hero-4-sm.jpg 900w, images/hero-4.jpg 1680w" sizes="100vw" alt="" width="1680" height="800" decoding="async" loading="lazy">
+    <img data-src="images/hero-5.jpg" data-srcset="images/hero-5-sm.jpg 900w, images/hero-5.jpg 1680w" sizes="100vw" alt="" width="1680" height="800" decoding="async" loading="lazy">
+    <img data-src="images/hero-6.jpg" data-srcset="images/hero-6-sm.jpg 900w, images/hero-6.jpg 1680w" sizes="100vw" alt="" width="1680" height="800" decoding="async" loading="lazy">
+    <img data-src="images/hero-7.jpg" data-srcset="images/hero-7-sm.jpg 900w, images/hero-7.jpg 1680w" sizes="100vw" alt="" width="1680" height="800" decoding="async" loading="lazy">
   </div>
   <span class="eyebrow">Kilgore, Texas &nbsp;·&nbsp; Mon&ndash;Fri 9am&ndash;5pm</span>
   <h1>Giving old wood <em>new life</em>.</h1>
@@ -548,6 +548,22 @@ footer a{color:var(--brass);text-decoration:none}
       box.insertBefore(frag, box.firstChild);
     })
     .catch(function(){ /* built-in gallery already on the page */ });
+})();
+</script>
+
+<script>
+/* Only the first hero photo loads with the page. The rest come in after load,
+   so a phone isn't downloading seven full-size photos before it shows anything. */
+(function(){
+  function hydrate(){
+    document.querySelectorAll('.hero-slides img[data-src]').forEach(function(im){
+      if (im.dataset.srcset) im.srcset = im.dataset.srcset;
+      im.src = im.dataset.src;
+      im.removeAttribute('data-src'); im.removeAttribute('data-srcset');
+    });
+  }
+  if (document.readyState === 'complete') setTimeout(hydrate, 400);
+  else window.addEventListener('load', function(){ setTimeout(hydrate, 400); });
 })();
 </script>
 </body>
