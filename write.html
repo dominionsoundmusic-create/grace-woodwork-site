@@ -1,0 +1,175 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta name="robots" content="noindex, nofollow">
+<title>Write a post — Grace Woodwork</title>
+<link rel="icon" href="/favicon.ico" sizes="any">
+<style>
+:root{--forest:#13261E;--ink:#0B1812;--pine:#EDF0EA;--brass:#C79045;--paper:#F5F8F3}
+*{box-sizing:border-box}
+body{margin:0;background:var(--pine);color:var(--forest);line-height:1.65;
+     font-family:'Karla',system-ui,-apple-system,Arial,sans-serif}
+header{background:var(--forest);color:var(--paper);padding:18px 24px;display:flex;align-items:center;gap:14px}
+header b{font-size:1.05rem}
+header span{margin-left:auto;font-size:.8rem;opacity:.7;font-family:'Roboto Mono',monospace;letter-spacing:.1em;text-transform:uppercase}
+header a{color:var(--brass);font-size:.8rem}
+.wrap{max-width:800px;margin:0 auto;padding:34px 24px 80px}
+h1{font-family:Georgia,serif;font-size:1.9rem;margin:0 0 8px}
+.sub{color:#4a5a50;margin:0 0 24px}
+.tips{background:#fff;border:1px solid rgba(19,38,30,.12);border-left:4px solid var(--brass);
+      border-radius:4px;padding:16px 20px;margin-bottom:24px}
+.tips h2{font-family:'Roboto Mono',monospace;font-size:.72rem;letter-spacing:.16em;text-transform:uppercase;color:#8F621E;margin:0 0 10px}
+.tips li{margin:5px 0;font-size:.95rem;color:#3d4f45}
+.card{background:#fff;border:1px solid rgba(19,38,30,.12);border-radius:4px;padding:22px}
+label{display:block;font-family:'Roboto Mono',monospace;font-size:.7rem;letter-spacing:.14em;
+      text-transform:uppercase;color:var(--forest);opacity:.75;margin:0 0 6px}
+input[type=text],textarea,input[type=password]{width:100%;padding:12px 13px;border:1px solid rgba(19,38,30,.2);
+      border-radius:3px;font-family:inherit;font-size:1rem;background:#fff;color:var(--forest)}
+textarea{min-height:280px;line-height:1.7;resize:vertical}
+input[type=file]{width:100%;padding:13px;border:2px dashed rgba(199,144,69,.5);border-radius:4px;
+      background:rgba(199,144,69,.06);cursor:pointer;font-family:inherit}
+.fg{margin-bottom:16px}
+button{background:var(--brass);color:var(--ink);border:0;padding:14px 30px;border-radius:3px;
+       font-family:inherit;font-weight:700;font-size:1rem;cursor:pointer}
+button:hover{background:#d9a457}
+button:disabled{opacity:.55;cursor:default}
+#status{margin-top:14px;font-size:.95rem;min-height:1.4em}
+.ok{color:#2f7d4f}.err{color:#b03030}
+.count{font-size:.8rem;color:#6b7a70;margin-top:5px}
+#gate{position:fixed;inset:0;background:var(--pine);z-index:99;display:flex;align-items:center;justify-content:center;padding:24px}
+#gate .box{max-width:400px;width:100%;background:#fff;border:1px solid rgba(19,38,30,.12);border-radius:4px;padding:28px}
+</style>
+</head>
+<body>
+
+<div id="gate">
+  <div class="box">
+    <h1 style="font-size:1.4rem">Grace Woodwork</h1>
+    <p class="sub" id="gate-sub">Checking…</p>
+    <div id="gate-fields" style="display:none">
+      <div class="fg"><label for="pw">Password</label>
+        <input id="pw" type="password" autocomplete="current-password" onkeydown="if(event.key==='Enter')gateGo()"></div>
+      <button onclick="gateGo()" id="gate-btn">Continue</button>
+      <div id="gate-msg" style="margin-top:12px;font-size:.9rem"></div>
+    </div>
+  </div>
+</div>
+
+<header>
+  <b>Grace Woodwork</b>
+  <a href="/shop-upload.html">Add photos</a>
+  <span>Write a post</span>
+</header>
+
+<div class="wrap">
+  <h1>Write a post</h1>
+  <p class="sub">Anything you publish here goes straight onto the website and shows up in the blog.</p>
+
+  <div class="tips">
+    <h2>What works</h2>
+    <ul>
+      <li><b>Write about one piece.</b> What came in, what was wrong with it, what you did, how it turned out.</li>
+      <li><b>Use the words a customer would.</b> "Water ring on a dining table" beats "surface remediation."</li>
+      <li><b>Say where.</b> Mentioning Kilgore, Longview or Tyler helps people nearby find it.</li>
+      <li><b>A few short paragraphs is plenty.</b> Leave a blank line between them.</li>
+      <li><b>Add a photo</b> if you have one — the finished piece is the best one to use.</li>
+    </ul>
+  </div>
+
+  <div class="card">
+    <div class="fg">
+      <label for="title">Title</label>
+      <input id="title" type="text" maxlength="90" placeholder="Bringing back a water-damaged oak dining table">
+      <div class="count" id="tcount">0 / 90</div>
+    </div>
+    <div class="fg">
+      <label for="photo">Photo (optional)</label>
+      <input id="photo" type="file" accept="image/*">
+    </div>
+    <div class="fg">
+      <label for="body">The post</label>
+      <textarea id="body" placeholder="A customer brought in her grandmother's oak table with water rings across the top…"></textarea>
+      <div class="count" id="bcount">0 words</div>
+    </div>
+    <button id="go" onclick="publish()">Publish to the website</button>
+    <div id="status"></div>
+  </div>
+</div>
+
+<script>
+var CLOUD='rxnz5l6u', PRESET=null, PW=null;
+var AUTH='/.netlify/functions/shop-auth', POST='/.netlify/functions/blog-post';
+
+async function api(url,payload){
+  var r=await fetch(url,{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify(payload)});
+  var d={}; try{ d=await r.json(); }catch(e){}
+  return {status:r.status,data:d};
+}
+async function gateInit(){
+  var sub=document.getElementById('gate-sub');
+  var r=await api(AUTH,{action:'status'});
+  if(!r.data.isSet){ sub.textContent='Set your password on the photo page first, then come back.'; return; }
+  sub.textContent='Enter your password to write a post.';
+  document.getElementById('gate-fields').style.display='block';
+  document.getElementById('pw').focus();
+}
+async function gateGo(){
+  var pw=document.getElementById('pw').value;
+  var msg=document.getElementById('gate-msg');
+  if(!pw){ msg.className='err'; msg.textContent='Enter your password.'; return; }
+  msg.className=''; msg.textContent='Checking…';
+  var r=await api(AUTH,{action:'check',password:pw});
+  if(r.data.ok){ PW=pw; PRESET=r.data.preset; document.getElementById('gate').style.display='none'; }
+  else { msg.className='err'; msg.textContent=r.data.error||'Wrong password.'; }
+}
+
+document.getElementById('title').addEventListener('input',function(){
+  document.getElementById('tcount').textContent=this.value.length+' / 90';
+});
+document.getElementById('body').addEventListener('input',function(){
+  var w=this.value.trim().split(/\s+/).filter(Boolean).length;
+  document.getElementById('bcount').textContent=w+' word'+(w===1?'':'s');
+});
+
+async function publish(){
+  var title=document.getElementById('title').value.trim();
+  var body=document.getElementById('body').value.trim();
+  var f=document.getElementById('photo').files[0];
+  var st=document.getElementById('status'), btn=document.getElementById('go');
+  if(title.length<3){ st.className='err'; st.textContent='Give the post a title.'; return; }
+  if(body.length<20){ st.className='err'; st.textContent='Write a bit more before publishing.'; return; }
+
+  btn.disabled=true; st.className=''; st.textContent='Publishing…';
+  var photoUrl='';
+  try{
+    if(f && PRESET){
+      st.textContent='Uploading the photo…';
+      var fd=new FormData(); fd.append('file',f); fd.append('upload_preset',PRESET); fd.append('tags','grace-blog');
+      var ur=await fetch('https://api.cloudinary.com/v1_1/'+CLOUD+'/image/upload',{method:'POST',body:fd});
+      var ud=await ur.json();
+      if(ud.secure_url) photoUrl='https://res.cloudinary.com/'+CLOUD+'/image/upload/f_auto,q_auto,w_1200/v'+ud.version+'/'+ud.public_id;
+    }
+    st.textContent='Publishing to the website…';
+    var r=await api(POST,{password:PW,title:title,body:body,photo:photoUrl});
+    if(r.data.ok){
+      st.className='ok';
+      st.innerHTML='Published. It will be live in a minute or two — <a href="'+r.data.url+'" target="_blank">see the post</a>.';
+      document.getElementById('title').value=''; document.getElementById('body').value='';
+      document.getElementById('photo').value='';
+      document.getElementById('tcount').textContent='0 / 90';
+      document.getElementById('bcount').textContent='0 words';
+    } else {
+      st.className='err'; st.textContent=r.data.error||'Could not publish.';
+    }
+  }catch(e){
+    st.className='err'; st.textContent='Something went wrong. Try again in a minute.';
+  }
+  btn.disabled=false;
+}
+
+gateInit();
+</script>
+</body>
+</html>
