@@ -1,0 +1,7 @@
+# Folder rename Aug 17 2026. Trends: "furniture repair" (26) is 2.6x
+# "furniture restoration" (10); "custom cabinets" (21) is ~4x "built in
+# cabinets" (~5). 301s so the old URLs keep whatever they earned.
+/furniture-restoration/*   /furniture-repair/:splat   301
+/furniture-restoration/    /furniture-repair/         301
+/cabinets-and-built-ins/*  /custom-cabinets/:splat    301
+/cabinets-and-built-ins/   /custom-cabinets/          301
