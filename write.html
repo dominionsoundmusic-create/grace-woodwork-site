@@ -40,9 +40,10 @@ button:disabled{opacity:.55;cursor:default}
 .count{font-size:.8rem;color:#6b7a70;margin-top:5px}
 #gate{position:fixed;inset:0;background:var(--pine);z-index:99;display:flex;align-items:center;justify-content:center;padding:24px}
 #gate .box{max-width:400px;width:100%;background:#fff;border:1px solid rgba(19,38,30,.12);border-radius:4px;padding:28px}
-</style>
+.hrsbar{background:#2b1d14;color:#e8dcc8;text-align:center;font-size:.84rem;padding:7px 12px;letter-spacing:.02em}.hrsbar b{color:#fff}</style>
 </head>
 <body>
+<div class="hrsbar">Open <b>Mon&ndash;Fri 9am&ndash;5pm</b> &middot; Kilgore, Texas &middot; <a href="tel:+19034457477" style="color:inherit">903-445-7477</a></div>
 
 <div id="gate">
   <div class="box">
@@ -171,5 +172,7 @@ async function publish(){
 
 gateInit();
 </script>
+
+<footer style="text-align:center;font-size:.85rem;opacity:.8;padding:22px 14px">Grace Woodwork &middot; Kilgore, Texas &middot; <a href="tel:+19034457477">903-445-7477</a><br>Open Monday to Friday, 9am to 5pm</footer>
 </body>
 </html>
