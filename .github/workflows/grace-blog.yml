@@ -1,0 +1,41 @@
+name: Grace twice-weekly blog post
+
+on:
+  schedule:
+    - cron: '0 14 * * 2,5'
+  workflow_dispatch:
+
+permissions:
+  contents: write
+
+concurrency:
+  group: grace-blog
+  cancel-in-progress: false
+
+jobs:
+  publish:
+    runs-on: ubuntu-latest
+    timeout-minutes: 30
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          ref: main
+
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.12'
+
+      - run: pip install 'anthropic>=1.6,<2'
+
+      - name: Write the post
+        env:
+          ANTHROPIC_API_KEY: ${{ secrets.ANTHROPIC_API_KEY }}
+        run: python .github/scripts/grace_blog.py
+
+      - name: Commit the post
+        run: |
+          git config user.name "Grace Woodwork blog"
+          git config user.email "actions@users.noreply.github.com"
+          git add blog sitemap.xml
+          git commit -m "New blog post"
+          git push
