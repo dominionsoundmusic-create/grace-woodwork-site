@@ -154,6 +154,8 @@ def draft(topic, posts):
     f = {k: v.strip() for k, v in zip(parts[1::2], parts[2::2])}
     for k in ("TITLE", "DESCRIPTION", "BODY", "SOURCES"):
         if not f.get(k): fail("missing field " + k)
+    # tidy the gap citations leave before punctuation ("a log ." -> "a log.")
+    f["BODY"] = re.sub(r"[ \t]+([.,;:!?)])", r"\1", f["BODY"])
     return f
 
 def guards(f, posts):
