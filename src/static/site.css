@@ -242,7 +242,7 @@ strong{font-weight:700}
 .tile__n{display:block;font:500 .78rem/1 var(--mono);letter-spacing:.12em;color:var(--brass-hi);margin-bottom:12px}
 
 /* numbered steps */
-.steps{list-style:none;padding:0;margin:8px 0 0;counter-reset:s;display:grid;gap:16px;grid-template-columns:repeat(auto-fit,minmax(min(100%,260px),1fr))}
+.steps{list-style:none;padding:0;margin:8px 0 0;counter-reset:s;display:grid;gap:16px;grid-template-columns:repeat(auto-fit,minmax(min(100%,340px),1fr))}
 .steps li{counter-increment:s;position:relative;padding:22px 22px 22px 70px;border:1px solid var(--line);border-radius:3px;margin:0;background:#fff}
 .steps li::before{content:counter(s);position:absolute;left:20px;top:20px;width:34px;height:34px;border-radius:50%;background:var(--forest);
   color:var(--brass-hi);font:700 1rem/34px var(--serif);text-align:center}
@@ -270,6 +270,7 @@ tbody tr:nth-child(even){background:#f7f9f6}
 caption{caption-side:bottom;text-align:left;font-size:.86rem;color:var(--slate);padding-top:8px}
 @media(max-width:720px){
   table.stack thead{display:none}
+  table.stack caption{display:block;width:100%}
   table.stack,table.stack tbody,table.stack tr,table.stack td{display:block;width:100%}
   table.stack tr{border:1px solid var(--line);border-radius:3px;margin-bottom:12px;background:#fff}
   table.stack td{border-bottom:1px solid var(--line);padding:10px 14px}
@@ -406,3 +407,13 @@ body{top:0!important}
 .band .faq__a a{color:var(--brass-dk)}
 .band .faq__a a:hover{color:var(--forest)}
 .band .card__body h3 a{color:var(--forest)}
+
+/* white boxes inside dark bands keep dark text (no white on white) */
+.band .steps li,.band .note,.band table,.band .card,.band .faq__item{color:var(--forest)}
+.band .steps li p,.band .note p,.band table p,.band .card p{color:var(--slate)}
+.band .steps strong,.band .note strong{color:var(--forest)}
+.band table a:not(.btn),.band .note a:not(.btn),.band .steps a:not(.btn){color:var(--brass-dk)}
+.band table a:not(.btn):hover,.band .note a:not(.btn):hover{color:var(--forest)}
+.band thead th{color:#fff}
+.band caption{background:#fff;color:var(--slate);padding:8px 14px}
+.band .table-wrap{background:transparent}
