@@ -1,0 +1,61 @@
+{% set b = site.business %}
+{% set canonical = page.canonical | default(b.origin ~ page.url) %}
+<!doctype html>
+{% if page.marker %}<!-- {{ page.marker }} -->
+{% endif %}
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>{{ page.title }}</title>
+<meta name="description" content="{{ page.description }}">
+{% if page.noindex %}
+<meta name="robots" content="noindex, follow">
+{% endif %}
+<link rel="canonical" href="{{ canonical }}">
+<meta property="og:type" content="{{ 'article' if page.type in ('guide', 'post') else 'website' }}">
+<meta property="og:site_name" content="{{ b.name }}">
+<meta property="og:title" content="{{ page.og_title | default(page.title) }}">
+<meta property="og:description" content="{{ page.description }}">
+<meta property="og:url" content="{{ canonical }}">
+<meta property="og:image" content="{{ page.og_image }}">
+<meta property="og:locale" content="en_US">
+<meta name="twitter:card" content="summary_large_image">
+<meta name="theme-color" content="{{ b.theme_color }}">
+<link rel="icon" href="/favicon.svg" type="image/svg+xml">
+<link rel="icon" href="/favicon.ico" sizes="any">
+<link rel="icon" type="image/png" sizes="32x32" href="/favicon-32.png">
+<link rel="apple-touch-icon" href="/apple-touch-icon.png">
+<link rel="manifest" href="/site.webmanifest">
+<link rel="preload" as="font" type="font/woff2" href="/fonts/zilla-slab-700-latin.woff2" crossorigin>
+<link rel="preload" as="font" type="font/woff2" href="/fonts/karla-var-latin.woff2" crossorigin>
+{% if page.preload_raw %}{{ page.preload_raw }}
+{% elif page.hero and page.hero.render_image %}{% set hs = webp_srcset(page.hero.render_image) %}
+<link rel="preload" as="image" href="/images/{{ page.hero.render_image }}"{% if hs %} imagesrcset="{{ hs }}" imagesizes="100vw" type="image/webp"{% endif %} fetchpriority="high">
+{% endif %}
+<link rel="stylesheet" href="/assets/site.css?v={{ asset_version }}">
+<script type="application/ld+json">{{ page.jsonld_raw if page.jsonld_raw else (page.jsonld | tojson_ld) }}</script>
+</head>
+<body class="type-{{ page.type | default('page') }}">
+<a class="skip" href="#main">Skip to content</a>
+{% include "partials/topbar.html" %}
+{% include "partials/header.html" %}
+<main id="main">
+{% block hero %}{% if page.hero %}{% include "partials/hero.html" %}{% endif %}{% endblock %}
+{% block crumbs %}{% if page.breadcrumbs %}
+<nav class="crumbs" aria-label="Breadcrumb"><ol>
+{% for c in page.breadcrumbs %}
+<li>{% if not loop.last %}<a href="{{ c.href }}">{{ c.label }}</a>{% else %}<span aria-current="page">{{ c.label }}</span>{% endif %}</li>
+{% endfor %}
+</ol></nav>
+{% endif %}{% endblock %}
+{% block content %}{% endblock %}
+{% if page.faqs %}{% include "partials/faq.html" %}{% endif %}
+{% block after_faq %}{% endblock %}
+{% if page.cta is not defined or page.cta %}{% include "partials/cta.html" %}{% endif %}
+</main>
+{% include "partials/footer.html" %}
+<div id="google_translate_element" hidden></div>
+<script src="/assets/site.js?v={{ asset_version }}" defer></script>
+</body>
+</html>

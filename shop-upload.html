@@ -4,7 +4,7 @@
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <meta name="robots" content="noindex, nofollow">
-<title>Add photos — Grace Woodwork</title>
+<title>Add photos | Grace Woodwork</title>
 <link rel="icon" href="/favicon.svg" type="image/svg+xml">
 <style>
 :root{--forest:#13261E;--ink:#0B1812;--pine:#EDF0EA;--pine-2:#DDE3D8;--brass:#C79045;--patina:#7E9179;--paper:#F5F8F3}
@@ -51,7 +51,7 @@ h2.sec{font-family:Georgia,serif;font-size:1.3rem;margin:30px 0 4px}
 .hrsbar{background:#2b1d14;color:#e8dcc8;text-align:center;font-size:.84rem;padding:7px 12px;letter-spacing:.02em}.hrsbar b{color:#fff}</style>
 <link rel="dns-prefetch" href="https://translate.google.com"><style>.hrsbar{display:none!important}</style></head>
 <body>
-<div class="hrsbar">Open <b>Mon&ndash;Fri 9am&ndash;5pm</b> &middot; Kilgore, Texas &middot; <a href="tel:+19034457477" style="color:inherit">903-445-7477</a></div>
+<div class="hrsbar">Open <b>Monday to Friday, 9am to 5pm</b> &middot; Kilgore, Texas &middot; <a href="tel:+19034457477" style="color:inherit">903-445-7477</a></div>
 <div id="gate" style="position:fixed;inset:0;background:var(--pine);z-index:999;display:flex;align-items:center;justify-content:center;padding:24px">
   <div style="max-width:400px;width:100%;background:#fff;border:1px solid rgba(19,38,30,.12);border-radius:4px;padding:28px">
     <h1 style="font-family:Georgia,serif;font-size:1.4rem;margin:0 0 6px" id="gate-title">Grace Woodwork</h1>
@@ -81,7 +81,7 @@ h2.sec{font-family:Georgia,serif;font-size:1.3rem;margin:30px 0 4px}
     <h2>Before you take the picture</h2>
     <ul>
       <li><b>Get it into good light.</b> Outside in the shade is best, or right by an open shop door. Overhead shop lights alone make the wood look orange.</li>
-      <li><b>Don't shoot into a window or the sun</b> — the piece goes dark and the background goes white.</li>
+      <li><b>Don't shoot into a window or the sun</b>, the piece goes dark and the background goes white.</li>
       <li><b>Wipe it down first.</b> Sawdust and fingerprints show up far more in a photo than in person.</li>
       <li><b>Get the whole piece in frame</b> with a little room around it, and hold the phone level so the legs don't lean.</li>
       <li><b>Take two:</b> one straight on, one from the corner so it looks solid rather than flat.</li>
@@ -95,7 +95,7 @@ h2.sec{font-family:Georgia,serif;font-size:1.3rem;margin:30px 0 4px}
       <input id="cap" type="text" maxlength="90" placeholder="1940s waterfall dresser, water-damaged veneer, stain matched to her bedroom set">
     </div>
     <div class="fg">
-      <label for="file">Choose photos — you can pick several at once</label>
+      <label for="file">Choose photos, you can pick several at once</label>
       <input id="file" type="file" accept="image/*" multiple>
     </div>
     <button id="go" onclick="upload()">Upload to the website</button>
@@ -172,7 +172,7 @@ async function upload(){
   btn.disabled = false;
   st.className = failed ? 'err' : 'ok';
   st.textContent = done + ' photo' + (done===1?'':'s') + ' added to the website'
-                 + (failed ? ', ' + failed + ' failed — try those again.' : '.');
+                 + (failed ? ', ' + failed + ' failed, try those again.' : '.');
   f.value = ''; document.getElementById('cap').value = '';
   setTimeout(function(){ bar.style.display='none'; bar.querySelector('i').style.width='0'; }, 900);
   setTimeout(loadGrid, 1200);
@@ -183,7 +183,7 @@ async function del(publicId){
   var tokens = tokenStore();
   var t = tokens[publicId];
   var st = document.getElementById('status');
-  if (!t){ st.className='err'; st.textContent = 'That photo can no longer be removed from this page — ask Maurice.'; return; }
+  if (!t){ st.className='err'; st.textContent = 'That photo can no longer be removed from this page, ask Maurice.'; return; }
   try {
     var fd = new FormData(); fd.append('token', t);
     var r = await fetch('https://api.cloudinary.com/v1_1/' + CLOUD + '/delete_by_token', { method:'POST', body: fd });
@@ -192,7 +192,7 @@ async function del(publicId){
     delete tokens[publicId]; localStorage.setItem('gwTokens', JSON.stringify(tokens));
     setTimeout(loadGrid, 800);
   } catch(e){
-    st.className='err'; st.textContent = 'Could not remove it — ask Maurice to take it down.';
+    st.className='err'; st.textContent = 'Could not remove it, ask Maurice to take it down.';
   }
 }
 
@@ -216,7 +216,7 @@ async function gateInit(){
       document.getElementById('pw-label').textContent='Password';
     } else {
       gateMode='set';
-      sub.textContent='First time here — choose a password. You can change it later.';
+      sub.textContent='First time here, choose a password. You can change it later.';
       document.getElementById('pw-label').textContent='Choose a password';
       document.getElementById('pw2-wrap').style.display='block';
       document.getElementById('pw').autocomplete='new-password';

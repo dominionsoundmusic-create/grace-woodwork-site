@@ -79,3 +79,21 @@
 /furniture-repair/troup-tx        /furniture-repair/troup-tx.html        301!
 /furniture-repair/tyler-tx        /furniture-repair/tyler-tx.html        301!
 /furniture-repair/white-oak-tx    /furniture-repair/white-oak-tx.html    301!
+
+# Oct 9 2026 rebuild. Netlify publishes the repository root, so the build sources, scripts, notes and
+# keyword research would otherwise be public. Forced 404s keep them out of view. None of these paths
+# is a page; the site itself lives in the folders and .html files listed in sitemap.xml.
+/src/*            /404.html   404!
+/scripts/*        /404.html   404!
+/docs/*           /404.html   404!
+/keywords/*       /404.html   404!
+/netlify/*        /404.html   404!
+/.github/*        /404.html   404!
+/build.py         /404.html   404!
+/CLAUDE.md        /404.html   404!
+/INTAKE.md        /404.html   404!
+/PLAYBOOK.md      /404.html   404!
+/SERVICES.md      /404.html   404!
+/README.md        /404.html   404!
+/package.json     /404.html   404!
+/netlify.toml     /404.html   404!

@@ -1,0 +1,9 @@
+{% extends "layouts/base.html" %}
+{% block after_faq %}
+<section class="sec">
+  <h2>{{ page.towns_h2 }}</h2>
+  <p class="muted">{{ page.towns_p }}</p>
+  {{ m.town_pills(page.hub, page.town) }}
+</section>
+{% if page.related %}{{ m.related(['/' ~ page.hub ~ '/'] + page.related, 'More from the shop') }}{% endif %}
+{% endblock %}

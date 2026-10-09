@@ -1,0 +1,62 @@
+{# Shared page components. Page bodies call these as m.<name>(...). #}
+
+{% macro service_cards(slugs) -%}
+<div class="cards">
+{% for slug in slugs %}{% set s = svc(slug) %}
+  <article class="card">
+    {% set f = s.card_image if image_exists(s.card_image) else s.card_fallback %}
+    {% if f and image_exists(f) %}{% set sz = img_size(f) %}{{ picture(f, s.card_alt if f == s.card_image else s.card_fallback_alt, sz[0], sz[1], "(max-width: 700px) 100vw, 33vw", ' loading="lazy" decoding="async"') }}{% endif %}
+    <div class="card__body">
+      <h3><a href="{{ s.url }}">{{ s.name }}</a></h3>
+      <p>{{ s.summary }}</p>
+      <p class="card__more" aria-hidden="true">Read more</p>
+    </div>
+  </article>
+{% endfor %}
+</div>
+{%- endmacro %}
+
+{% macro guide_cards(slugs) -%}
+<div class="cards">
+{% for slug in slugs %}{% set g = svc(slug) %}
+  <article class="card">
+    <div class="card__body">
+      <h3><a href="{{ g.url }}">{{ g.name }}</a></h3>
+      <p>{{ g.summary }}</p>
+      <p class="card__more" aria-hidden="true">Read the guide</p>
+    </div>
+  </article>
+{% endfor %}
+</div>
+{%- endmacro %}
+
+{% macro town_pills(hub, exclude=None) -%}
+<ul class="pills">
+{% for t in site.towns if t.slug != exclude %}
+  <li><a href="/{{ hub }}/{{ t.slug }}-tx.html">{{ t.name }}</a></li>
+{% endfor %}
+</ul>
+{%- endmacro %}
+
+{% macro related(slugs, title='Related pages') -%}
+<section class="sec related">
+  <h2>{{ title }}</h2>
+  <ul class="pills">
+  {% for slug in slugs %}
+    {% if slug.startswith('/') %}{% set h = (site.hubs | selectattr('url', 'equalto', slug) | list) %}<li><a href="{{ slug }}">{{ h[0].name if h else slug }}</a></li>
+    {% else %}{% set s = svc(slug) %}<li><a href="{{ s.url }}">{{ s.name }}</a></li>{% endif %}
+  {% endfor %}
+  </ul>
+</section>
+{%- endmacro %}
+
+{% macro sources(items) -%}
+<aside class="sources" aria-labelledby="sources-title">
+  <h2 id="sources-title">Sources</h2>
+  <ul>
+  {% for s in items %}
+    <li><a href="{{ s.url }}" target="_blank" rel="noopener">{{ s.label }}</a></li>
+  {% endfor %}
+  </ul>
+</aside>
+{%- endmacro %}

@@ -1,0 +1,313 @@
+{
+ "business": {
+  "name": "Grace Woodwork",
+  "tagline": "Giving old wood new life",
+  "origin": "https://gracewoodworkkilgore.com",
+  "phone_display": "903-445-7477",
+  "phone_tel": "+19034457477",
+  "city": "Kilgore",
+  "state": "Texas",
+  "state_abbr": "TX",
+  "hours_text": "Monday to Friday, 9am to 5pm",
+  "hours_short": "Mon to Fri, 9am to 5pm",
+  "facebook": "https://www.facebook.com/profile.php?id=100057624850623",
+  "messenger": "https://m.me/100057624850623",
+  "reviews_text": "100% recommend on Facebook from 13 reviews",
+  "logo": "/images/logo.jpg",
+  "logo_full": "/images/logo-full.jpg",
+  "theme_color": "#13261E",
+  "description": "Grace Woodwork is a woodworking shop in Kilgore, Texas that repairs and refinishes furniture and builds custom furniture, cabinets and wood signs for East Texas.",
+  "credit_text": "Designed by Dominion Web Design Pro",
+  "credit_url": "https://dominionwebdesignpro.com"
+ },
+ "towns": [
+  {
+   "slug": "kilgore",
+   "name": "Kilgore"
+  },
+  {
+   "slug": "longview",
+   "name": "Longview"
+  },
+  {
+   "slug": "white-oak",
+   "name": "White Oak"
+  },
+  {
+   "slug": "gladewater",
+   "name": "Gladewater"
+  },
+  {
+   "slug": "overton",
+   "name": "Overton"
+  },
+  {
+   "slug": "troup",
+   "name": "Troup"
+  },
+  {
+   "slug": "henderson",
+   "name": "Henderson"
+  },
+  {
+   "slug": "tyler",
+   "name": "Tyler"
+  },
+  {
+   "slug": "marshall",
+   "name": "Marshall"
+  },
+  {
+   "slug": "lindale",
+   "name": "Lindale"
+  },
+  {
+   "slug": "big-sandy",
+   "name": "Big Sandy"
+  },
+  {
+   "slug": "gilmer",
+   "name": "Gilmer"
+  },
+  {
+   "slug": "arp",
+   "name": "Arp"
+  },
+  {
+   "slug": "new-london",
+   "name": "New London"
+  },
+  {
+   "slug": "hallsville",
+   "name": "Hallsville"
+  }
+ ],
+ "hubs": [
+  {
+   "slug": "furniture-repair",
+   "url": "/furniture-repair/",
+   "name": "Furniture Repair",
+   "short": "Furniture repair"
+  },
+  {
+   "slug": "custom-furniture",
+   "url": "/custom-furniture/",
+   "name": "Custom Furniture",
+   "short": "Custom furniture"
+  },
+  {
+   "slug": "custom-cabinets",
+   "url": "/custom-cabinets/",
+   "name": "Custom Cabinets",
+   "short": "Custom cabinets"
+  },
+  {
+   "slug": "custom-signs",
+   "url": "/custom-signs/",
+   "name": "Custom Signs",
+   "short": "Custom signs"
+  }
+ ],
+ "services": [
+  {
+   "slug": "furniture-refinishing",
+   "hub": "furniture-repair",
+   "url": "/furniture-repair/furniture-refinishing/",
+   "name": "Furniture Refinishing",
+   "short": "Furniture refinishing",
+   "card_image": "work-19.jpg",
+   "card_alt": "A tall china cabinet with glass doors, refinished in black",
+   "summary": "Old finish taken off properly, damage repaired, and a new stain and topcoat built up so the grain still shows."
+  },
+  {
+   "slug": "table-refinishing",
+   "hub": "furniture-repair",
+   "url": "/furniture-repair/table-refinishing/",
+   "name": "Table Refinishing",
+   "short": "Table refinishing",
+   "card_image": "work-09.jpg",
+   "card_alt": "An oval oak table with its leaves in, freshly refinished",
+   "summary": "Dining, kitchen, coffee and side tables: water rings, worn tops and loose bases dealt with so the table can be used every day again."
+  },
+  {
+   "slug": "antique-furniture-restoration",
+   "hub": "furniture-repair",
+   "url": "/furniture-repair/antique-furniture-restoration/",
+   "name": "Antique Furniture Restoration",
+   "short": "Antique restoration",
+   "card_image": "work-10.jpg",
+   "card_alt": "A carved claw-foot pedestal table base in the shop",
+   "summary": "Older and family pieces repaired with care for what makes them valuable, and refinished only when that is the right call."
+  },
+  {
+   "slug": "chair-caning-and-repair",
+   "hub": "furniture-repair",
+   "url": "/furniture-repair/chair-caning-and-repair/",
+   "name": "Chair Caning and Chair Repair",
+   "short": "Chair caning and repair",
+   "card_image": "chair-caning-hero.jpg",
+   "card_alt": "A refinished wooden church pew bench",
+   "summary": "Wobbly chairs taken apart and reglued, broken legs and rungs repaired, and cane seats and backs replaced.",
+   "card_fallback": "work-01.jpg",
+   "card_fallback_alt": "A refinished wooden church pew bench"
+  },
+  {
+   "slug": "custom-dining-tables",
+   "hub": "custom-furniture",
+   "url": "/custom-furniture/custom-dining-tables/",
+   "name": "Custom Dining Tables",
+   "short": "Custom dining tables",
+   "card_image": "work-20.jpg",
+   "card_alt": "A long farmhouse table with a natural wood top on a lawn",
+   "summary": "Solid wood dining tables built to the size of your room and the number of people you feed."
+  },
+  {
+   "slug": "cabinet-painting",
+   "hub": "custom-cabinets",
+   "url": "/custom-cabinets/cabinet-painting/",
+   "name": "Cabinet Painting",
+   "short": "Cabinet painting",
+   "card_image": "work-23.jpg",
+   "card_alt": "Cabinet boxes and doors painted gray, drying in a garage",
+   "summary": "Kitchen and bathroom cabinets cleaned, sanded, primed and painted in a durable cabinet finish."
+  },
+  {
+   "slug": "cabinet-refacing",
+   "hub": "custom-cabinets",
+   "url": "/custom-cabinets/cabinet-refacing/",
+   "name": "Cabinet Refacing",
+   "short": "Cabinet refacing",
+   "card_image": "work-36.jpg",
+   "card_alt": "New raw wood cabinet doors and face frame ready for finish",
+   "summary": "Keep the cabinet boxes, change the face: new doors, drawer fronts and a fresh skin on the frames."
+  },
+  {
+   "slug": "built-in-shelves",
+   "hub": "custom-cabinets",
+   "url": "/custom-cabinets/built-in-shelves/",
+   "name": "Built-In Shelves and Bookshelves",
+   "short": "Built-in shelves",
+   "card_image": "work-21.jpg",
+   "card_alt": "Built-in desk, shelves and wall cabinets in a home office",
+   "summary": "Bookshelves, desk walls and storage built into the room and finished to match it."
+  },
+  {
+   "slug": "deck-repair",
+   "hub": "",
+   "url": "/deck-repair/",
+   "name": "Deck Repair",
+   "short": "Deck repair",
+   "card_image": "deck-repair-hero.jpg",
+   "card_alt": "A wood deck in an East Texas backyard with new boards and a fresh stain",
+   "summary": "Rotten or loose boards, wobbly railings and worn stairs repaired and refinished for East Texas weather."
+  },
+  {
+   "slug": "porch-repair",
+   "hub": "",
+   "url": "/porch-repair/",
+   "name": "Porch Repair",
+   "short": "Porch repair",
+   "card_image": "porch-repair-hero.jpg",
+   "card_alt": "A covered wood front porch on an East Texas house with repaired posts and railing",
+   "summary": "Porch floors, steps, railings, posts and trim repaired in wood and finished to last."
+  }
+ ],
+ "guides": [
+  {
+   "slug": "cabinet-painting-cost",
+   "hub": "custom-cabinets",
+   "url": "/custom-cabinets/cabinet-painting-cost/",
+   "name": "What Cabinet Painting Costs",
+   "short": "Cabinet painting cost",
+   "summary": "Published price ranges, what moves the number up or down, and how a quote is put together."
+  },
+  {
+   "slug": "what-is-cabinet-refacing",
+   "hub": "custom-cabinets",
+   "url": "/custom-cabinets/what-is-cabinet-refacing/",
+   "name": "What Cabinet Refacing Is",
+   "short": "What is cabinet refacing",
+   "summary": "Refacing, resurfacing, refinishing and replacing, explained side by side."
+  },
+  {
+   "slug": "furniture-refinishing-cost",
+   "hub": "furniture-repair",
+   "url": "/furniture-repair/furniture-refinishing-cost/",
+   "name": "What Furniture Refinishing Costs",
+   "short": "Furniture refinishing cost",
+   "summary": "Published price ranges by piece, what changes the price, and when repair costs less than you think."
+  },
+  {
+   "slug": "furniture-veneer-repair",
+   "hub": "furniture-repair",
+   "url": "/furniture-repair/furniture-veneer-repair/",
+   "name": "Fixing Furniture Veneer",
+   "short": "Furniture veneer repair",
+   "summary": "Why veneer lifts and chips, the safe checks you can do, and when to bring it to a shop."
+  },
+  {
+   "slug": "how-chair-caning-is-repaired",
+   "hub": "furniture-repair",
+   "url": "/furniture-repair/how-chair-caning-is-repaired/",
+   "name": "How Chair Caning Is Repaired",
+   "short": "How chair caning is repaired",
+   "summary": "Hand caning, pressed cane and rush seats, and what a repair involves for each."
+  },
+  {
+   "slug": "dining-table-size-for-8",
+   "hub": "custom-furniture",
+   "url": "/custom-furniture/dining-table-size-for-8/",
+   "name": "What Size Dining Table Seats 8",
+   "short": "Dining table size for 8",
+   "summary": "Table sizes for six, eight and ten people, and how much room to leave around it."
+  }
+ ],
+ "nav": [
+  {
+   "label": "Furniture Repair",
+   "href": "/furniture-repair/",
+   "children": [
+    "furniture-refinishing",
+    "table-refinishing",
+    "antique-furniture-restoration",
+    "chair-caning-and-repair"
+   ]
+  },
+  {
+   "label": "Custom Furniture",
+   "href": "/custom-furniture/",
+   "children": [
+    "custom-dining-tables"
+   ]
+  },
+  {
+   "label": "Cabinets",
+   "href": "/custom-cabinets/",
+   "children": [
+    "cabinet-painting",
+    "cabinet-refacing",
+    "built-in-shelves"
+   ]
+  },
+  {
+   "label": "Signs",
+   "href": "/custom-signs/"
+  },
+  {
+   "label": "Porch & Deck",
+   "href": "",
+   "children": [
+    "porch-repair",
+    "deck-repair"
+   ]
+  },
+  {
+   "label": "Gallery",
+   "href": "/gallery/"
+  },
+  {
+   "label": "Blog",
+   "href": "/blog/"
+  }
+ ]
+}
