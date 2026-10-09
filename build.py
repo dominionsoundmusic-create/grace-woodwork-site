@@ -216,8 +216,9 @@ class Builder:
         comment = (f'<!-- image pending (see docs/image-list.md): <img src="/images/{file}" '
                    f'alt="{html.escape(alt, quote=True)}" width="{width}" height="{height}" loading="lazy"> -->')
         if fallback and (IMAGES / fallback).exists():
+            # the caption describes the planned photo, so it is left off the stand-in
             w, h = image_size(IMAGES / fallback)
-            return Markup(f"{comment}<figure{cls_attr}>{self.picture(fallback, fallback_alt or alt, w, h, sizes, lazy)}{cap}</figure>")
+            return Markup(f"{comment}<figure{cls_attr}>{self.picture(fallback, fallback_alt or alt, w, h, sizes, lazy)}</figure>")
         raise ValueError(f"{page.get('url')}: planned image {file} has no existing fallback photo")
 
     def note_missing(self, file, width, height, alt, desc, url):
