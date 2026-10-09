@@ -4,7 +4,7 @@
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <meta name="robots" content="noindex, nofollow">
-<title>Write a post — Grace Woodwork</title>
+<title>Write a post | Grace Woodwork</title>
 <link rel="icon" href="/favicon.ico" sizes="any">
 <style>
 :root{--forest:#13261E;--ink:#0B1812;--pine:#EDF0EA;--brass:#C79045;--paper:#F5F8F3}
@@ -43,7 +43,7 @@ button:disabled{opacity:.55;cursor:default}
 .hrsbar{background:#2b1d14;color:#e8dcc8;text-align:center;font-size:.84rem;padding:7px 12px;letter-spacing:.02em}.hrsbar b{color:#fff}</style>
 <link rel="dns-prefetch" href="https://translate.google.com"><style>.hrsbar{display:none!important}</style></head>
 <body>
-<div class="hrsbar">Open <b>Mon&ndash;Fri 9am&ndash;5pm</b> &middot; Kilgore, Texas &middot; <a href="tel:+19034457477" style="color:inherit">903-445-7477</a></div>
+<div class="hrsbar">Open <b>Monday to Friday, 9am to 5pm</b> &middot; Kilgore, Texas &middot; <a href="tel:+19034457477" style="color:inherit">903-445-7477</a></div>
 
 <div id="gate">
   <div class="box">
@@ -75,7 +75,7 @@ button:disabled{opacity:.55;cursor:default}
       <li><b>Use the words a customer would.</b> "Water ring on a dining table" beats "surface remediation."</li>
       <li><b>Say where.</b> Mentioning Kilgore, Longview or Tyler helps people nearby find it.</li>
       <li><b>A few short paragraphs is plenty.</b> Leave a blank line between them.</li>
-      <li><b>Add a photo</b> if you have one — the finished piece is the best one to use.</li>
+      <li><b>Add a photo</b> if you have one, the finished piece is the best one to use.</li>
     </ul>
   </div>
 
@@ -156,7 +156,7 @@ async function publish(){
     var r=await api(POST,{password:PW,title:title,body:body,photo:photoUrl});
     if(r.data.ok){
       st.className='ok';
-      st.innerHTML='Published. It will be live in a minute or two — <a href="'+r.data.url+'" target="_blank">see the post</a>.';
+      st.innerHTML='Published. It will be live in a minute or two, <a href="'+r.data.url+'" target="_blank">see the post</a>.';
       document.getElementById('title').value=''; document.getElementById('body').value='';
       document.getElementById('photo').value='';
       document.getElementById('tcount').textContent='0 / 90';
