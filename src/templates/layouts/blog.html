@@ -1,0 +1,30 @@
+{% extends "layouts/base.html" %}
+{% set t = page.tok %}
+{% if page.type == 'post' %}
+{% set _ = page.update({'canonical': t.CANONICAL, 'og_image': t.OG_IMAGE, 'jsonld_raw': t.JSONLD, 'preload_raw': t.PRELOAD}) %}
+{% else %}
+{% set _ = page.update({'og_image': site.business.origin ~ '/images/hero-6.jpg', 'jsonld_raw': t.JSONLD, 'preload_raw': t.PRELOAD}) %}
+{% endif %}
+{% block hero %}
+<section class="hero hero--short">
+  <div class="hero__media">{{ page.tok.HERO }}</div>
+  <div class="hero__fade" aria-hidden="true"></div>
+  <div class="hero__inner">
+    <h1>{{ page.tok.H1 }}</h1>
+    <p class="hero__lead">{{ page.tok.DESCRIPTION if page.type == 'post' else page.tok.COUNT_TEXT }}</p>
+    <div class="btn-row">
+      <a class="btn btn--brass" href="tel:{{ site.business.phone_tel }}">Call {{ site.business.phone_display }}</a>
+      <a class="btn btn--ghost" href="/#quote">Send a photo, get a quote</a>
+    </div>
+    {% if page.type == 'post' %}<p class="hero__note">Posted {{ page.tok.DATE }}</p>{% endif %}
+  </div>
+  <div class="rule" aria-hidden="true"></div>
+</section>
+{% endblock %}
+{% block crumbs %}
+<nav class="crumbs" aria-label="Breadcrumb"><ol>
+<li><a href="/">Home</a></li>
+{% if page.type == 'post' %}<li><a href="/blog/">Blog</a></li>
+<li><span aria-current="page">{{ page.tok.H1 }}</span></li>{% else %}<li><span aria-current="page">Blog</span></li>{% endif %}
+</ol></nav>
+{% endblock %}

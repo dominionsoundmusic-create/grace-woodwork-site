@@ -1,0 +1,41 @@
+{% set b = site.business %}
+<header class="site-header">
+  <div class="site-header__inner">
+    <a class="logo" href="/"><img src="{{ b.logo }}" alt="" width="40" height="40"><b>{{ b.name }}</b></a>
+    <button class="nav-toggle" type="button" aria-expanded="false" aria-controls="site-nav"><span class="nav-toggle__bars" aria-hidden="true"></span>Menu</button>
+    <nav class="site-nav" id="site-nav" aria-label="Main">
+      <ul class="site-nav__list">
+      {% for item in site.nav %}
+        {% if item.children %}
+        {% set subs = item.children | map('svc_by_slug') | list %}
+        {% set here = page.url == item.href or page.url in (subs | map(attribute='url') | list) or (item.href and page.url.startswith(item.href)) %}
+        {% set sid = 'sub-' ~ loop.index %}
+        <li class="has-sub">
+          {% if item.href %}
+          <a class="site-nav__link{% if here %} is-current{% endif %}" href="{{ item.href }}"{% if page.url == item.href %} aria-current="page"{% endif %}>{{ item.label }}</a>
+          <button class="sub-toggle" type="button" aria-expanded="false" aria-controls="{{ sid }}"><span class="sr">Show the {{ item.label }} menu</span></button>
+          {% else %}
+          <button class="site-nav__link sub-toggle sub-toggle--text{% if here %} is-current{% endif %}" type="button" aria-expanded="false" aria-controls="{{ sid }}">{{ item.label }}</button>
+          {% endif %}
+          <ul class="sub" id="{{ sid }}">
+            {% if item.href %}<li><a href="{{ item.href }}"{% if page.url == item.href %} aria-current="page"{% endif %}>All {{ item.label | lower }}</a></li>{% endif %}
+            {% for s in subs %}
+            <li><a href="{{ s.url }}"{% if page.url == s.url %} aria-current="page"{% endif %}>{{ s.short }}</a></li>
+            {% endfor %}
+          </ul>
+        </li>
+        {% else %}
+        <li><a class="site-nav__link{% if page.url.startswith(item.href) and item.href != '/' %} is-current{% endif %}" href="{{ item.href }}"{% if page.url == item.href %} aria-current="page"{% endif %}>{{ item.label }}</a></li>
+        {% endif %}
+      {% endfor %}
+      </ul>
+    </nav>
+    <div class="header-actions">
+      <div class="lang" role="group" aria-label="Language">
+        <button type="button" class="lang__btn" data-lang="en" aria-pressed="true">EN</button>
+        <button type="button" class="lang__btn" data-lang="es" aria-pressed="false" lang="es">ES</button>
+      </div>
+      <a class="btn btn--brass btn--sm header-call" href="tel:{{ b.phone_tel }}"><span class="header-call__long">{{ b.phone_display }}</span><span class="header-call__short">Call</span></a>
+    </div>
+  </div>
+</header>

@@ -1,0 +1,46 @@
+{% set b = site.business %}
+<footer class="site-footer">
+  <div class="rule" aria-hidden="true"></div>
+  <div class="site-footer__grid">
+    <div class="site-footer__brand">
+      <a href="/"><img src="{{ b.logo_full }}" alt="{{ b.name }}" width="84" height="84" loading="lazy" decoding="async"></a>
+      <p>{{ b.name }}: {{ b.tagline | lower }}. A woodworking shop in {{ b.city }}, {{ b.state }}.</p>
+      <p><a class="site-footer__phone" href="tel:{{ b.phone_tel }}">{{ b.phone_display }}</a><br>{{ b.hours_text }}</p>
+      <p><a class="fb" href="{{ b.facebook }}" target="_blank" rel="noopener"><svg viewBox="0 0 24 24" width="20" height="20" fill="currentColor" aria-hidden="true" focusable="false"><path d="M22 12.06C22 6.5 17.52 2 12 2S2 6.5 2 12.06c0 5 3.66 9.15 8.44 9.94v-7.03H7.9v-2.91h2.54V9.85c0-2.52 1.49-3.91 3.77-3.91 1.09 0 2.24.2 2.24.2v2.46h-1.26c-1.24 0-1.63.78-1.63 1.57v1.89h2.78l-.45 2.91h-2.33V22c4.78-.79 8.44-4.94 8.44-9.94z"/></svg>{{ b.reviews_text }}<span class="sr"> (opens in a new tab)</span></a></p>
+    </div>
+    <div>
+      <p class="site-footer__label">Repair and refinishing</p>
+      <ul>
+        <li><a href="/furniture-repair/">Furniture repair</a></li>
+        {% for s in site.services if s.hub == 'furniture-repair' %}<li><a href="{{ s.url }}">{{ s.short }}</a></li>{% endfor %}
+        <li><a href="/porch-repair/">Porch repair</a></li>
+        <li><a href="/deck-repair/">Deck repair</a></li>
+      </ul>
+    </div>
+    <div>
+      <p class="site-footer__label">Built to order</p>
+      <ul>
+        <li><a href="/custom-furniture/">Custom furniture</a></li>
+        {% for s in site.services if s.hub == 'custom-furniture' %}<li><a href="{{ s.url }}">{{ s.short }}</a></li>{% endfor %}
+        <li><a href="/custom-cabinets/">Custom cabinets</a></li>
+        {% for s in site.services if s.hub == 'custom-cabinets' %}<li><a href="{{ s.url }}">{{ s.short }}</a></li>{% endfor %}
+        <li><a href="/custom-signs/">Custom signs</a></li>
+      </ul>
+    </div>
+    <div>
+      <p class="site-footer__label">Guides</p>
+      <ul>{% for g in site.guides %}<li><a href="{{ g.url }}">{{ g.short }}</a></li>{% endfor %}</ul>
+      <p class="site-footer__label" style="margin-top:22px">More</p>
+      <ul><li><a href="/gallery/">Gallery</a></li><li><a href="/blog/">Blog</a></li><li><a href="/#quote">Get a quote</a></li></ul>
+    </div>
+    <div>
+      <p class="site-footer__label">Towns we work in</p>
+      <ul>{% for t in site.towns %}<li><a href="/furniture-repair/{{ t.slug }}-tx.html">{{ t.name }}</a></li>{% endfor %}</ul>
+    </div>
+  </div>
+  <div class="site-footer__bottom">
+    <span>&copy; 2026 {{ b.name }} &middot; {{ b.city }}, {{ b.state }}</span>
+    <span>&#128081; <a href="{{ b.credit_url }}">{{ b.credit_text }}</a></span>
+    <span class="site-footer__tools"><a href="/shop-upload.html">Shop</a> &middot; <a href="/write.html">My Blog</a></span>
+  </div>
+</footer>

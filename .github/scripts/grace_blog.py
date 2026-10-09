@@ -14,7 +14,7 @@ import html, json, os, re, sys, time
 from datetime import datetime, timezone
 from pathlib import Path
 
-REPO = Path(__file__).resolve().parents[2]
+REPO = Path(os.environ.get("GRACE_BLOG_REPO") or Path(__file__).resolve().parents[2])
 BLOG = REPO / "blog"
 SITEMAP = REPO / "sitemap.xml"
 DOMAIN = "gracewoodworkkilgore.com"
@@ -115,6 +115,7 @@ Rules:
 - 550 to 850 words. Practical and specific; no filler, no hype.
 - Where it helps, mention East Texas conditions (heat, humidity, pine country) but do not overdo it.
 - Speak about Grace Woodwork only in the last paragraph, briefly: if a piece needs professional work, readers can send a photo through the website or call 903-445-7477. Do not describe past jobs or customers.
+- Do not use em dashes or en dashes. Use American spelling.
 - Plain paragraphs. You may use up to four subheadings, each on its own line starting with "## ".
 - Must not repeat these recent posts:
 {prev}
@@ -154,8 +155,10 @@ def draft(topic, posts):
     f = {k: v.strip() for k, v in zip(parts[1::2], parts[2::2])}
     for k in ("TITLE", "DESCRIPTION", "BODY", "SOURCES"):
         if not f.get(k): fail("missing field " + k)
-    # tidy the gap citations leave before punctuation ("a log ." -> "a log.")
+    # tidy the gap citations leave before punctuation ("a log ." -> "a log."), and no em/en dashes
     f["BODY"] = re.sub(r"[ \t]+([.,;:!?)])", r"\1", f["BODY"])
+    for k in ("TITLE", "DESCRIPTION", "BODY"):
+        f[k] = undash(f[k])
     return f
 
 def guards(f, posts):
@@ -183,105 +186,171 @@ def body_html(body):
         else: out.append("<p>" + esc(block).replace("\n", "<br>") + "</p>")
     return "\n      ".join(out)
 
-GT = '<div id="gt-bar" style="position:fixed;top:0;left:0;right:0;height:34px;z-index:10000;background:#0b1220;border-bottom:1px solid rgba(255,255,255,.14);display:flex;align-items:center;justify-content:flex-end;padding:0 12px;box-sizing:border-box"><div id="gt-wrap" style="display:flex;align-items:center;gap:6px;color:#fff;border:1px solid rgba(255,255,255,.5);border-radius:999px;padding:3px 12px;font:600 13px/1.2 system-ui,-apple-system,Segoe UI,sans-serif;cursor:pointer"><span aria-hidden="true">&#127760;</span><span id="gt-label">Espa&ntilde;ol</span><div id="google_translate_element"></div></div></div>\n<style>#gt-wrap .goog-te-gadget-simple{background:transparent!important;border:0!important;padding:0!important;font-size:13px!important}#gt-wrap .goog-te-gadget-simple a,#gt-wrap .goog-te-gadget-simple span{color:#fff!important;border:0!important}#gt-wrap .goog-te-gadget-icon{display:none}body{top:0!important}.scripture-bar{min-height:34px;box-sizing:border-box}.skiptranslate iframe.goog-te-banner-frame{display:none!important}</style>\n<script>(function(){var H=34,b=document.body;b.style.paddingTop=((parseFloat(getComputedStyle(b).paddingTop)||0)+H)+\'px\';document.documentElement.style.scrollPaddingTop=H+\'px\';var all=b.getElementsByTagName(\'*\');for(var i=0;i<all.length;i++){var el=all[i];if(el.id===\'gt-bar\'||(el.closest&&el.closest(\'#gt-bar\')))continue;var cs=getComputedStyle(el);if((cs.position===\'fixed\'||cs.position===\'sticky\')&&cs.top!==\'auto\'&&parseFloat(cs.top)<150){el.style.setProperty(\'top\',(parseFloat(cs.top)+H)+\'px\',\'important\');}}var mb=0;for(var j=0;j<all.length;j++){var e2=all[j],c2=getComputedStyle(e2);if(c2.position===\'fixed\'&&e2.getBoundingClientRect().top<160){var bt=e2.getBoundingClientRect().bottom;if(bt<220&&bt>mb)mb=bt;}}var q=document.querySelector(\'.quote-bar\');if(q&&getComputedStyle(q).position===\'static\'){var qt=q.getBoundingClientRect().top+window.scrollY;if(qt<mb)q.style.marginTop=(mb-qt)+\'px\';}})();\nfunction googleTranslateElementInit(){new google.translate.TranslateElement({pageLanguage:\'en\',includedLanguages:\'es,pt,fr,zh-CN,vi,ko,tl\',layout:google.translate.TranslateElement.InlineLayout.SIMPLE},\'google_translate_element\');var l=document.getElementById(\'gt-label\');if(l)l.style.display=\'none\';}\n(function(){var d=false;function go(){if(d)return;d=true;var s=document.createElement(\'script\');s.src=\'https://translate.google.com/translate_a/element.js?cb=googleTranslateElementInit\';s.async=true;document.body.appendChild(s);}[\'mousemove\',\'scroll\',\'touchstart\',\'keydown\'].forEach(function(e){window.addEventListener(e,go,{once:true,passive:true});});var w=document.getElementById(\'gt-wrap\');if(w)w.addEventListener(\'click\',go);setTimeout(go,3000);})();</script>'
+# ---- page rendering ---------------------------------------------------------------------------
+# The post and index pages come from netlify/blog-templates.json, which build.py renders from the
+# site's own header, footer and styles. This script only fills in the %%TOKENS%%, so a robot post
+# looks exactly like the rest of the site. build.py uses these same functions to re-render old posts.
+TEMPLATES = None
+DEFAULT_HERO = "/images/hero-2.jpg"
 
-def photo_for(n):
-    imgs = sorted(p.name for p in (REPO / "images").glob("work-*.jpg"))
-    return ("/images/" + imgs[n % len(imgs)]) if imgs else ""
 
-def post_page(f, name, date_str, photo):
-    srcs = "".join(f'<li><a href="{esc(u)}" rel="nofollow">{esc(n.strip(" -"))}</a></li>'
-                   for n, u in re.findall(r"^(.*?)\s*-?\s*(https?://\S+)\s*$", f["SOURCES"], re.M))
-    return f"""<!DOCTYPE html>
-<html lang="en">
-<head>
-<meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>{esc(f['TITLE'])} | Grace Woodwork</title>
-<meta name="description" content="{esc(f['DESCRIPTION'])}">
-<link rel="canonical" href="https://{DOMAIN}/blog/{name}">
-<link rel="icon" href="/favicon.ico" sizes="any">
-<style>
-:root{{--forest:#13261E;--ink:#0B1812;--pine:#EDF0EA;--brass:#C79045;--paper:#F5F8F3}}
-*{{box-sizing:border-box}}
-body{{margin:0;background:var(--pine);color:var(--forest);line-height:1.75;font-family:'Karla',system-ui,-apple-system,Arial,sans-serif;font-size:1.05rem}}
-header{{background:var(--forest);padding:16px 24px}}
-header a{{color:var(--brass);text-decoration:none;font-weight:700;font-size:1.1rem}}
-.wrap{{max-width:74ch;margin:0 auto;padding:48px 24px 80px}}
-h1{{font-family:Georgia,'Zilla Slab',serif;font-size:clamp(1.9rem,4vw,2.7rem);line-height:1.18;margin:0 0 10px}}
-h2{{font-family:Georgia,serif;font-size:1.35rem;margin:34px 0 10px}}
-.date{{font-family:'Roboto Mono',monospace;font-size:.76rem;letter-spacing:.14em;text-transform:uppercase;color:#8F621E;margin-bottom:30px}}
-img.lead{{width:100%;border-radius:4px;margin:0 0 30px}}
-p{{margin:0 0 20px}}
-.src{{font-size:.86rem;color:#4a5a50}} .src a{{color:#4a5a50}}
-footer{{border-top:1px solid rgba(19,38,30,.14);margin-top:46px;padding-top:24px;font-size:.95rem}}
-footer a{{color:var(--forest)}}
-.cta{{display:inline-block;margin-top:14px;background:var(--brass);color:var(--ink);text-decoration:none;padding:13px 26px;border-radius:3px;font-weight:700}}
-</style>
-</head>
-<body>
-<header><a href="/">Grace Woodwork</a></header>
-<article class="wrap">
-  <h1>{esc(f['TITLE'])}</h1>
-  <div class="date">{esc(date_str)}</div>
-  {f'<img class="lead" src="{photo}" alt="A piece finished in the Grace Woodwork shop in Kilgore" loading="lazy">' if photo else ''}
-      {body_html(f['BODY'])}
-  <div class="src"><p><strong>Sources</strong></p><ul>{srcs}</ul></div>
-  <footer>
-    <p>Grace Woodwork restores and builds furniture in Kilgore, Texas.</p>
-    <a class="cta" href="/#quote">Send a photo, get a quote</a><br>
-    <p style="margin-top:18px"><a href="/blog/">&larr; All posts</a></p>
-  </footer>
-</article>
-{GT}
-</body>
-</html>"""
+def templates():
+    global TEMPLATES
+    if TEMPLATES is None:
+        TEMPLATES = json.loads((REPO / "netlify" / "blog-templates.json").read_text())
+    return TEMPLATES
 
-def title_from(name):
-    s = re.sub(r"-\d{10,}\.html$", "", name).replace("-", " ")
-    return s[:1].upper() + s[1:]
 
-def index_page(posts):
+def undash(s):
+    """No em or en dashes in visible copy (site rule): they become commas, ranges become 'to'."""
+    s = re.sub(r"(\d)\s*[–—]\s*(\d)", r"\1 to \2", s)
+    s = re.sub(r"\s*(?:[–—]|&mdash;|&ndash;)\s*", ", ", s)
+    s = re.sub(r",\s*,", ",", s)
+    return re.sub(r",\s*([.?!:;])", r"\1", s)
+
+
+def hero_html(photo, alt):
+    """The post's photo as the full-width hero. Local photos get their WebP sizes if build.py made them."""
+    photo = photo or DEFAULT_HERO
+    alt = esc(alt)
+    if photo.startswith("/images/"):
+        stem = Path(photo).stem
+        variants = []
+        for f in (REPO / "images").glob(stem + "-*.webp"):
+            m = re.fullmatch(re.escape(stem) + r"-(\d+)\.webp", f.name)
+            if m:
+                variants.append(int(m.group(1)))
+        img = f'<img src="{photo}" alt="{alt}" width="1600" height="900" fetchpriority="high" decoding="async">'
+        if variants:
+            srcset = ", ".join(f"/images/{stem}-{w}.webp {w}w" for w in sorted(variants))
+            return f'<!--post-photo:{photo}--><picture><source type="image/webp" srcset="{srcset}" sizes="100vw">{img}</picture>', srcset
+        return f"<!--post-photo:{photo}-->{img}", ""
+    return (f'<!--post-photo:{esc(photo)}--><img src="{esc(photo)}" alt="{alt}" width="1600" height="900" '
+            f'fetchpriority="high" decoding="async">'), ""
+
+
+def preload_html(photo, srcset):
+    photo = photo or DEFAULT_HERO
+    extra = f' imagesrcset="{srcset}" imagesizes="100vw" type="image/webp"' if srcset else ""
+    return f'<link rel="preload" as="image" href="{esc(photo)}"{extra} fetchpriority="high">'
+
+
+def abs_url(photo):
+    photo = photo or DEFAULT_HERO
+    return photo if photo.startswith("http") else f"https://{DOMAIN}{photo}"
+
+
+def ld(obj):
+    return json.dumps(obj, ensure_ascii=False, separators=(",", ":")).replace("</", "<\\/")
+
+
+def fill(tpl, values):
+    for k, v in values.items():
+        tpl = tpl.replace("%%" + k + "%%", v)
+    return tpl
+
+
+def render_post(m):
+    """m: name, ts, title, description, date_str, photo, body_html, sources_html."""
+    t = templates()
+    url = f"https://{DOMAIN}/blog/{m['name']}"
+    hero, srcset = hero_html(m.get("photo"), m["title"])
+    biz = t["business"]
+    published = datetime.fromtimestamp(m["ts"] / 1000, timezone.utc).strftime("%Y-%m-%d") if m.get("ts") else ""
+    graph = [biz, {"@type": "BlogPosting", "@id": url + "#article", "headline": m["title"], "description": m["description"],
+                   "image": abs_url(m.get("photo")), "datePublished": published, "author": {"@id": biz["@id"]},
+                   "publisher": {"@id": biz["@id"]}, "mainEntityOfPage": url, "inLanguage": "en-US"},
+             {"@type": "BreadcrumbList", "itemListElement": [
+                 {"@type": "ListItem", "position": 1, "name": "Home", "item": f"https://{DOMAIN}/"},
+                 {"@type": "ListItem", "position": 2, "name": "Blog", "item": f"https://{DOMAIN}/blog/"},
+                 {"@type": "ListItem", "position": 3, "name": m["title"], "item": url}]}]
+    sources = m.get("sources_html") or ""
+    return fill(t["post"], {
+        "TITLE": esc(m["title"]) + " | Grace Woodwork", "DESCRIPTION": esc(m["description"]), "CANONICAL": url,
+        "OG_IMAGE": abs_url(m.get("photo")), "JSONLD": ld({"@context": "https://schema.org", "@graph": graph}),
+        "HERO": hero, "PRELOAD": preload_html(m.get("photo"), srcset), "H1": esc(m["title"]), "DATE": esc(m["date_str"]),
+        "BODY": m["body_html"], "SOURCES": f"<!--post-sources-->{sources}<!--/post-sources-->",
+    })
+
+
+def render_index(posts):
+    t = templates()
     items = []
     for p in posts:
         when = datetime.fromtimestamp(p["ts"] / 1000, timezone.utc).strftime("%B %-d, %Y") if p["ts"] else ""
         items.append(f'    <li><a href="/blog/{p["name"]}">{esc(p["title"])}</a>' + (f'<span class="d">{when}</span>' if when else "") + "</li>")
     n = len(posts)
-    return f"""<!DOCTYPE html>
-<html lang="en">
-<head>
-<meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Blog | Grace Woodwork</title>
-<meta name="description" content="Notes from the shop: furniture repair, refinishing and custom woodwork in Kilgore, Texas.">
-<link rel="canonical" href="https://{DOMAIN}/blog/">
-<link rel="icon" href="/favicon.ico" sizes="any">
-<style>
-body{{margin:0;background:#EDF0EA;color:#13261E;line-height:1.7;font-family:'Karla',system-ui,Arial,sans-serif}}
-header{{background:#13261E;padding:16px 24px}}
-header a{{color:#C79045;text-decoration:none;font-weight:700;font-size:1.1rem}}
-.wrap{{max-width:800px;margin:0 auto;padding:46px 24px 80px}}
-h1{{font-family:Georgia,serif;font-size:2rem;margin:0 0 6px}}
-.sub{{color:#4a5a50;margin:0 0 28px}}
-ul{{list-style:none;padding:0}}
-li{{padding:16px 0;border-bottom:1px solid rgba(19,38,30,.12);display:flex;justify-content:space-between;gap:16px;flex-wrap:wrap}}
-li a{{color:#13261E;text-decoration:none;font-weight:600}}
-li a:hover{{color:#8F621E}}
-.d{{color:#7c8a80;font-size:.86rem;white-space:nowrap}}
-</style>
-</head>
-<body>
-<header><a href="/">Grace Woodwork</a></header>
-<div class="wrap">
-  <h1>From the shop</h1>
-  <p class="sub">{n} post{'' if n == 1 else 's'} on restoration, repair and custom work.</p>
-  <ul>
-{chr(10).join(items)}
-  </ul>
-</div>
-{GT}
-</body>
-</html>"""
+    hero, srcset = hero_html("/images/hero-6.jpg", "Pine shelf units being built in the Grace Woodwork shop")
+    biz = t["business"]
+    graph = [biz, {"@type": "Blog", "@id": f"https://{DOMAIN}/blog/#blog", "name": "Grace Woodwork blog",
+                   "url": f"https://{DOMAIN}/blog/", "publisher": {"@id": biz["@id"]}, "inLanguage": "en-US"}]
+    return fill(t["index"], {
+        "TITLE": "Blog: Furniture Repair and Woodwork Notes | Grace Woodwork",
+        "DESCRIPTION": "Notes from the shop: furniture repair, refinishing and custom woodwork advice from Grace Woodwork in Kilgore, Texas.",
+        "JSONLD": ld({"@context": "https://schema.org", "@graph": graph}), "HERO": hero,
+        "PRELOAD": preload_html("/images/hero-6.jpg", srcset), "H1": "From the shop",
+        "COUNT_TEXT": f"{n} post{'' if n == 1 else 's'} on restoration, repair and custom work, written in Kilgore, Texas.",
+        "ITEMS": "\n".join(items),
+    })
+
+
+def parse_post(raw, name):
+    """Read a post written by any version of either blog robot back into its parts."""
+    m = re.search(r"-(\d{10,})\.html$", name)
+    ts = int(m.group(1)) if m else 0
+    title = html.unescape(re.search(r"<h1>(.*?)</h1>", raw, re.S).group(1).strip())
+    d = re.search(r'<meta name="description" content="([^"]*)"', raw)
+    desc = html.unescape(d.group(1)) if d else title
+    if "<!--post-body-->" in raw:
+        body = raw.split("<!--post-body-->", 1)[1].split("<!--/post-body-->", 1)[0].strip()
+        src = raw.split("<!--post-sources-->", 1)[1].split("<!--/post-sources-->", 1)[0] if "<!--post-sources-->" in raw else ""
+        ph = re.search(r"<!--post-photo:(.*?)-->", raw)
+        photo = html.unescape(ph.group(1)) if ph and ph.group(1) != DEFAULT_HERO else ""
+        dm = re.search(r'<p class="hero__note">Posted (.*?)</p>', raw)
+        date_str = html.unescape(dm.group(1)) if dm else ""
+    else:
+        art = re.search(r'<article class="wrap">(.*?)</article>', raw, re.S).group(1)
+        dm = re.search(r'<div class="date">(.*?)</div>', art, re.S)
+        date_str = html.unescape(dm.group(1).strip()) if dm else ""
+        ph = re.search(r'<img class="lead" src="([^"]+)"', art)
+        photo = html.unescape(ph.group(1)) if ph else ""
+        start = max(dm.end() if dm else 0, art.find(">", ph.start()) + 1 if ph else 0)
+        stop = min(i for i in (art.find('<div class="src">'), art.find("<footer>"), len(art)) if i >= 0)
+        body = art[start:stop].strip()
+        sm = re.search(r'<div class="src">.*?(<ul>.*?</ul>)</div>', art, re.S)
+        src = ('<aside class="sources" aria-labelledby="sources-title"><h2 id="sources-title">Sources</h2>'
+               + sm.group(1) + "</aside>") if sm else ""
+    body = re.sub(r">\s+<", ">\n<", undash(body))
+    if not date_str and ts:
+        date_str = datetime.fromtimestamp(ts / 1000, timezone.utc).strftime("%B %-d, %Y")
+    return {"name": name, "ts": ts, "title": undash(title), "description": undash(desc), "date_str": date_str,
+            "photo": photo, "body_html": body, "sources_html": src}
+
+
+def sources_html(sources_text):
+    items = "".join(f'<li><a href="{esc(u)}" rel="nofollow noopener" target="_blank">{esc(n.strip(" -"))}</a></li>'
+                    for n, u in re.findall(r"^(.*?)\s*-?\s*(https?://\S+)\s*$", sources_text, re.M))
+    return f'<aside class="sources" aria-labelledby="sources-title"><h2 id="sources-title">Sources</h2><ul>{items}</ul></aside>' if items else ""
+
+
+def post_page(f, name, date_str, photo, ts=0):
+    return render_post({"name": name, "ts": ts, "title": f["TITLE"], "description": f["DESCRIPTION"], "date_str": date_str,
+                        "photo": photo, "body_html": body_html(f["BODY"]), "sources_html": sources_html(f["SOURCES"])})
+
+
+def photo_for(n):
+    imgs = sorted(p.name for p in (REPO / "images").glob("work-*.jpg"))
+    return ("/images/" + imgs[n % len(imgs)]) if imgs else ""
+
+
+def title_from(name):
+    s = re.sub(r"-\d{10,}\.html$", "", name).replace("-", " ")
+    return s[:1].upper() + s[1:]
+
+
+def index_page(posts):
+    return render_index(posts)
+
 
 def sitemap(posts):
     x = SITEMAP.read_text() if SITEMAP.exists() else '<?xml version="1.0" encoding="UTF-8"?>\n<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">\n</urlset>'
@@ -292,20 +361,33 @@ def sitemap(posts):
                       for u in [base] + [base + p["name"] for p in posts])
     return x.replace("</urlset>", block + "\n</urlset>")
 
+DRY_RUN_DRAFT = {
+    "TITLE": "Dry run: how to tell when a chair joint needs regluing",
+    "DESCRIPTION": "A test post written by the dry run, never published: checks the robot's page matches the site design.",
+    "BODY": "This post was made by a dry run of the blog robot. It checks the page template, the blog index and the sitemap.\n\n"
+            "## A subheading\n\nA wobbly chair usually means a joint has let go. If a piece needs professional work, "
+            "send a photo through the website or call 903-445-7477.",
+    "SOURCES": "USDA Forest Products Laboratory, Wood Handbook - https://www.fpl.fs.usda.gov/documnts/fplgtr/fpl_gtr190.pdf",
+}
+
+
 def main():
+    dry = "--dry-run" in sys.argv
     posts = existing_posts()
     topic = pick_topic(posts)
     print("topic:", topic)
-    f = draft(topic, posts)
-    guards(f, posts)
+    f = dict(DRY_RUN_DRAFT) if dry else draft(topic, posts)
+    if not dry:
+        guards(f, posts)
     ts = int(time.time() * 1000)
     name = f"{slugify(f['TITLE'])}-{ts}.html"
     date_str = datetime.now(timezone.utc).strftime("%B %-d, %Y")
-    (BLOG / name).write_text(post_page(f, name, date_str, photo_for(len(posts))))
+    (BLOG / name).write_text(post_page(f, name, date_str, photo_for(len(posts)), ts))
     allp = [{"name": name, "ts": ts, "title": f["TITLE"]}] + posts
     (BLOG / "index.html").write_text(index_page(allp))
     SITEMAP.write_text(sitemap(allp))
     print("published:", name)
+
 
 if __name__ == "__main__":
     main()

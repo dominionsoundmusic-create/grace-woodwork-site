@@ -1,0 +1,29 @@
+{% set h = page.hero %}
+<section class="hero{% if h.short %} hero--short{% endif %}">
+  <div class="hero__media">
+  {% if h.slides %}
+    {% for s in h.slides %}
+    {% if loop.first %}{{ picture(s.file, s.alt, s.w, s.h, "100vw", ' class="slide on" fetchpriority="high" decoding="async"') }}{% else %}{{ picture_deferred(s.file, s.alt, s.w, s.h, "100vw", ' class="slide" decoding="async"') }}{% endif %}
+    {% endfor %}
+  {% elif h.render_image %}
+    {{ picture(h.render_image, h.render_alt, h.w, h.h, "100vw", ' fetchpriority="high" decoding="async"' ~ (' style="object-position:' ~ h.position ~ '"' if h.position else '')) }}
+  {% endif %}
+  </div>
+  {% if h.image and h.image != h.render_image %}<!-- planned hero (see docs/image-list.md): <img src="/images/{{ h.image }}" alt="{{ h.alt }}" width="1920" height="1080"> -->{% endif %}
+  <div class="hero__fade" aria-hidden="true"></div>
+  <div class="hero__inner">
+    <h1>{{ h.h1 | default(page.h1) }}</h1>
+    <p class="hero__lead">{{ h.lead }}</p>
+    <div class="btn-row">
+      <a class="btn btn--brass" href="tel:{{ site.business.phone_tel }}">Call {{ site.business.phone_display }}</a>
+      <a class="btn btn--ghost" href="{{ h.secondary_href | default('/#quote') }}">{{ h.secondary_label | default('Send a photo, get a quote') }}</a>
+    </div>
+    {% if h.note %}<p class="hero__note">{{ h.note }}</p>{% endif %}
+  </div>
+  {% if h.slides %}
+  <div class="hero-dots" role="group" aria-label="Choose a photo">
+    {% for s in h.slides %}<button type="button" data-i="{{ loop.index0 }}" aria-label="Photo {{ loop.index }}"{% if loop.first %} aria-current="true"{% endif %}></button>{% endfor %}
+  </div>
+  {% endif %}
+  <div class="rule" aria-hidden="true"></div>
+</section>

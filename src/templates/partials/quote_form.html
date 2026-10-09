@@ -1,0 +1,48 @@
+  <form class="qform" name="quote" method="POST" action="/thanks.html"
+        data-netlify="true" netlify-honeypot="company" enctype="multipart/form-data">
+    <input type="hidden" name="form-name" value="quote">
+    <p class="hp"><label>Leave this empty <input name="company"></label></p>
+
+    <div class="two">
+      <div class="fg">
+        <label for="q-name">Your name</label>
+        <input id="q-name" name="name" type="text" required autocomplete="name" placeholder="First and last">
+      </div>
+      <div class="fg">
+        <label for="q-phone">Phone</label>
+        <input id="q-phone" name="phone" type="tel" required autocomplete="tel" placeholder="Best number to reach you">
+      </div>
+    </div>
+
+    <div class="fg">
+      <label for="q-email">Email <span style="text-transform:none;letter-spacing:0;opacity:.6">(optional)</span></label>
+      <input id="q-email" name="email" type="email" autocomplete="email" placeholder="So we can send photos as it comes along">
+    </div>
+
+    <div class="fg">
+      <label for="q-service">What do you need?</label>
+      <select id="q-service" name="service">
+        <option>Furniture repair</option>
+        <option>Custom furniture built to order</option>
+        <option>Cabinets or built-ins</option>
+        <option>Kitchen cabinetry</option>
+        <option>Porch or deck repair</option>
+        <option>Signs or custom frames</option>
+        <option value="Repair — joints, veneer, legs or hardware">Repair: joints, veneer, legs or hardware</option>
+        <option>Not sure yet</option>
+      </select>
+    </div>
+
+    <div class="fg">
+      <label for="q-photo">Photo of the piece</label>
+      <input id="q-photo" name="photo" type="file" accept="image/*">
+      <p class="hint">A phone picture is plenty. It's the fastest way to get a real answer on what it needs.</p>
+    </div>
+
+    <div class="fg">
+      <label for="q-msg">Tell us about it</label>
+      <textarea id="q-msg" name="message" rows="5" placeholder="What it is, what's wrong with it, and roughly when you'd like it back."></textarea>
+    </div>
+
+    <button type="submit">Send it over</button>
+  </form>
