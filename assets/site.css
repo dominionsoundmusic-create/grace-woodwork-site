@@ -217,7 +217,19 @@ strong{font-weight:700}
 .photo-row .fig img{aspect-ratio:4/3;object-fit:cover}
 
 /* cards */
-.cards{display:grid;gap:18px;grid-template-columns:repeat(auto-fill,minmax(min(100%,280px),1fr))}
+.cards{display:flex;flex-wrap:wrap;justify-content:center;gap:18px}
+.cards>*{flex:0 0 calc((100% - 3*18px)/4)}
+@media(max-width:1199px){.cards>*{flex-basis:calc((100% - 2*18px)/3)}}
+@media(max-width:899px){.cards>*{flex-basis:calc((100% - 18px)/2)}}
+@media(max-width:560px){.cards>*{flex-basis:100%}}
+.pair{display:grid;grid-template-columns:minmax(0,1fr);gap:48px 40px;align-items:start}
+@media(min-width:900px){.pair{grid-template-columns:repeat(2,minmax(0,1fr))}.pair .cards>*{flex-basis:calc((100% - 18px)/2)}}
+@media(min-width:561px) and (max-width:899px){.pair .cards>*{flex-basis:calc((100% - 18px)/2)}}
+.pair__ask{background:var(--forest);color:#eef2ec;border-top:4px solid var(--brass);border-radius:3px;padding:clamp(26px,3vw,40px);align-self:stretch;display:flex;flex-direction:column;justify-content:center}
+.pair__ask h3{color:#fff;margin-top:0}
+.pair__ask p{color:#dfe6dd;margin-bottom:22px}
+.pair__ask .btn--line{border-color:#fff;color:#fff}
+.pair__ask .btn--line:hover{background:#fff;color:var(--forest)}
 .card{display:flex;flex-direction:column;background:#fff;border:1px solid var(--line);border-top:3px solid var(--brass);border-radius:3px;overflow:hidden}
 .card picture,.card>img{aspect-ratio:4/3;overflow:hidden}
 .card img{width:100%;height:100%;object-fit:cover}
@@ -279,7 +291,7 @@ caption{caption-side:bottom;text-align:left;font-size:.86rem;color:var(--slate);
 }
 
 /* link pills */
-.pills{list-style:none;padding:0;margin:14px 0 0;display:flex;flex-wrap:wrap;gap:8px}
+.pills{list-style:none;padding:0;margin:14px 0 0;display:flex;flex-wrap:wrap;justify-content:center;gap:8px}
 .pills li{margin:0}
 .pills a{display:inline-block;padding:9px 15px;border:1px solid var(--line);border-radius:3px;text-decoration:none;color:var(--forest);font-size:.96rem;background:#fff}
 .pills a:hover{border-color:var(--brass);background:var(--forest);color:#fff}
@@ -368,7 +380,10 @@ caption{caption-side:bottom;text-align:left;font-size:.86rem;color:var(--slate);
 .contact-rows p{margin:0}
 
 /* blog */
-.post-list{list-style:none;padding:0;margin:0;display:grid;gap:14px;grid-template-columns:repeat(auto-fill,minmax(min(100%,340px),1fr))}
+.post-list{list-style:none;padding:0;margin:0;display:flex;flex-wrap:wrap;justify-content:center;gap:14px}
+.post-list li{flex:0 0 calc((100% - 2*14px)/3)}
+@media(max-width:1099px){.post-list li{flex-basis:calc((100% - 14px)/2)}}
+@media(max-width:700px){.post-list li{flex-basis:100%}}
 .post-list li{margin:0;border:1px solid var(--line);border-top:3px solid var(--brass);border-radius:3px;padding:20px 22px;position:relative;background:#fff}
 .post-list a{font-family:var(--serif);font-size:1.22rem;font-weight:700;color:var(--forest);text-decoration:none;line-height:1.25}
 .post-list a::after{content:'';position:absolute;inset:0}
@@ -417,3 +432,18 @@ body{top:0!important}
 .band thead th{color:#fff}
 .band caption{background:#fff;color:var(--slate);padding:8px 14px}
 .band .table-wrap{background:transparent}
+
+.site-footer__towns{border-top:1px solid rgba(245,248,243,.12);margin-top:34px;padding-top:26px}
+.site-footer__towns ul{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:4px 24px}
+@media(min-width:600px){.site-footer__towns ul{grid-template-columns:repeat(3,minmax(0,1fr))}}
+@media(min-width:900px){.site-footer__towns ul{grid-template-columns:repeat(5,minmax(0,1fr))}}
+
+/* Oct 13 2026: no holes on the right. Steps fill the row (4 or 3 across, never 3 plus 1). */
+@media(min-width:1100px){.steps:has(>li:nth-child(4):last-child){grid-template-columns:repeat(4,minmax(0,1fr))}.steps:has(>li:nth-child(4):last-child) li{padding:64px 20px 22px}.steps:has(>li:nth-child(4):last-child) li::before{left:20px;top:18px}}
+@media(min-width:900px) and (max-width:1099px){.steps:has(>li:nth-child(4):last-child){grid-template-columns:repeat(2,minmax(0,1fr))}}
+/* A pair of cards on its own gets a third of the row each, centered */
+@media(min-width:900px){.cards:has(>:nth-child(2):last-child)>*{flex-basis:calc((100% - 2*18px)/3)}.pair .cards:has(>:nth-child(2):last-child)>*{flex-basis:calc((100% - 18px)/2)}}
+@media(min-width:1100px){.faq__list>:last-child:nth-child(odd){grid-column:1/-1}}
+@media(min-width:700px) and (max-width:1099px){.steps>li:last-child:nth-child(odd){grid-column:1/-1}}
+@media(min-width:600px){.photo-row:has(>:nth-child(3):last-child){grid-template-columns:repeat(3,minmax(0,1fr))}}
+@media(min-width:1100px){.steps:has(>li:nth-child(6):last-child){grid-template-columns:repeat(3,minmax(0,1fr))}}

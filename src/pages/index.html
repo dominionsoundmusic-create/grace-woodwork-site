@@ -57,26 +57,41 @@ faqs:
 </section>
 
 <section class="sec">
-  <h3>Built to order</h3>
-  <p class="muted">Solid wood furniture, cabinets and built-ins, sized to your room and your family.</p>
-  {{ m.service_cards(['custom-dining-tables', 'built-in-shelves']) }}
-  <div class="btn-row" style="margin-top:18px">
-    <a class="btn btn--line btn--sm" href="/custom-furniture/">All custom furniture</a>
-    <a class="btn btn--line btn--sm" href="/custom-cabinets/">Custom cabinets</a>
-    <a class="btn btn--line btn--sm" href="/custom-signs/">Custom wood signs</a>
+  <div class="pair">
+    <div>
+      <h3>Built to order</h3>
+      <p class="muted">Solid wood furniture, cabinets and built-ins, sized to your room and your family.</p>
+      {{ m.service_cards(['custom-dining-tables', 'built-in-shelves']) }}
+      <div class="btn-row" style="margin-top:18px">
+        <a class="btn btn--line btn--sm" href="/custom-furniture/">All custom furniture</a>
+        <a class="btn btn--line btn--sm" href="/custom-cabinets/">Custom cabinets</a>
+        <a class="btn btn--line btn--sm" href="/custom-signs/">Custom wood signs</a>
+      </div>
+    </div>
+    <div>
+      <h3>Kitchen cabinet makeovers</h3>
+      <p class="muted">When the cabinet boxes are sound, a new finish or new doors costs far less than a new kitchen.</p>
+      {{ m.service_cards(['cabinet-painting', 'cabinet-refacing']) }}
+    </div>
   </div>
 </section>
 
 <section class="sec">
-  <h3>Kitchen cabinet makeovers</h3>
-  <p class="muted">When the cabinet boxes are sound, a new finish or new doors costs far less than a new kitchen.</p>
-  {{ m.service_cards(['cabinet-painting', 'cabinet-refacing']) }}
-</section>
-
-<section class="sec">
-  <h3>Porches and decks</h3>
-  <p class="muted">Wood repairs outside the house, done to the same standard as the work inside it.</p>
-  {{ m.service_cards(['porch-repair', 'deck-repair']) }}
+  <div class="pair">
+    <div>
+      <h3>Porches and decks</h3>
+      <p class="muted">Wood repairs outside the house, done to the same standard as the work inside it.</p>
+      {{ m.service_cards(['porch-repair', 'deck-repair']) }}
+    </div>
+    <div class="pair__ask">
+      <h3>Not sure which one you need?</h3>
+      <p>Take a phone picture of the piece or the spot that needs work and send it over. You will hear back what it needs and what it will cost before anything is taken apart.</p>
+      <div class="btn-row">
+        <a class="btn btn--brass" href="/#quote">Send a photo</a>
+        <a class="btn btn--line" href="tel:{{ site.business.phone_tel }}">Call {{ site.business.phone_display }}</a>
+      </div>
+    </div>
+  </div>
 </section>
 
 <section class="band band--forest" id="work">

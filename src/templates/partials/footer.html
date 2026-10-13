@@ -33,10 +33,10 @@
       <p class="site-footer__label" style="margin-top:22px">More</p>
       <ul><li><a href="/gallery/">Gallery</a></li><li><a href="/blog/">Blog</a></li><li><a href="/#quote">Get a quote</a></li></ul>
     </div>
-    <div>
-      <p class="site-footer__label">Towns we work in</p>
-      <ul>{% for t in site.towns %}<li><a href="/furniture-repair/{{ t.slug }}-tx.html">{{ t.name }}</a></li>{% endfor %}</ul>
-    </div>
+  </div>
+  <div class="site-footer__towns">
+    <p class="site-footer__label">Towns we work in</p>
+    <ul>{% for t in site.towns %}<li><a href="/furniture-repair/{{ t.slug }}-tx.html">{{ t.name }}</a></li>{% endfor %}</ul>
   </div>
   <div class="site-footer__bottom">
     <span>&copy; 2026 {{ b.name }} &middot; {{ b.city }}, {{ b.state }}</span>
